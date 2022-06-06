@@ -6,6 +6,8 @@ void	error(void)
 	exit(EXIT_FAILURE);
 }
 
+// ** Тут мой пайпикс, а точнее, выполнение любой команды оболочки Shell ** //
+
 char	*find_path(char *command, char **envp)
 {
 	char	**paths;
@@ -43,6 +45,7 @@ void	check_str(char *str, char **envp)
 
 	i = 0;
 	command = ft_split(str, ' ');
+	
 	path = find_path(command[0], envp);
 	if (!path)
 	{
@@ -55,6 +58,9 @@ void	check_str(char *str, char **envp)
 	if (execve(path, command, envp) == -1)
 		error();
 }
+// ** ------------------------------------------------------------ ** //
+
+// ** Мейник, считываем с помощью редлайна строку в нашей оболочке ** //
 
 int	main(int ac, char **av, char **envp)
 {
@@ -66,13 +72,20 @@ int	main(int ac, char **av, char **envp)
 		return (0);
 	while (1)
 	{
-		str = readline("$");
-		pid = fork();
-		if (pid == 0)
-			check_str(str, envp);
+		str = readline("miniShell $");
+		if (get_str(str) == 0)
+		{
+			pid = fork();
+			if (pid == 0)
+				check_str(str, envp);
+			else
+				waitpid(pid, NULL, 0);
+		}
 		else
-			waitpid(pid, NULL, 0);
-		// printf("COPY = %s\n", str);
+		{
+			cd(str);
+			envp = find_pwd(envp);
+		}
 		free(str);
 	}
 	return (0);

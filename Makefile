@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra -Werror
 RFLAGS = -lreadline -ltermcap -g -L/Users/mmago/.brew/Cellar/readline/8.1.2/lib/ -I/Users/mmago/.brew/Cellar/readline/8.1.2/include
 RM = rm -f
 
-FILES = src/main.c
+FILES = src/main.c src/envp_parser.c
 					
 OBJS = $(FILES:%.c=%.o)
 

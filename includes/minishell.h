@@ -20,4 +20,8 @@
 # include <curses.h>
 # include <term.h>
 
+int		cd(char *str);
+int		get_str(char *str);
+char	**find_pwd(char **envp);
+
 #endif
