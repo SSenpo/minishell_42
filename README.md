@@ -1,4 +1,5 @@
-# minishell_42
+## MiniShell_42
+***
 
 School 42 mini-terminal project
 
