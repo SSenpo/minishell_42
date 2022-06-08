@@ -1,5 +1,15 @@
 #include "../includes/minishell.h"
 
+void	free_str(char **str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		free(str[i]);
+	free(str);
+}
+
 void	error(void)
 {
 	perror("Error");
@@ -26,14 +36,18 @@ char	*find_path(char *command, char **envp)
 		path = ft_strjoin(part_path, command);
 		free(part_path);
 		if (access(path, F_OK) == 0)
+		{
+			free_str(paths);
 			return (path);
+		}
 		free(path);
 		i++;
 	}
 	i = -1;
-	while (paths[++i])
-		free(paths[i]);
-	free(paths);
+	free_str(paths);
+	// while (paths[++i])
+	// 	free(paths[i]);
+	// free(paths);
 	return (0);
 }
 
@@ -45,14 +59,11 @@ void	check_str(char *str, char **envp)
 
 	i = 0;
 	command = ft_split(str, ' ');
-	
 	path = find_path(command[0], envp);
 	if (!path)
 	{
-		while (command[i++])
-			free(command[i]);
-		free(command);
-		write(2, "Error: Wrong command\n", 22);
+		printf("zsh: command not found: %s\n", command[0]);
+		free_str(command);
 		exit(127);
 	}
 	if (execve(path, command, envp) == -1)
@@ -65,11 +76,13 @@ void	check_str(char *str, char **envp)
 int	main(int ac, char **av, char **envp)
 {
 	char *str;
+	// int	ppid;
 	int	pid;
 
 	str = NULL;
 	if (ac != 0 && !(*av))
 		return (0);
+	// ppid = fork();
 	while (1)
 	{
 		str = readline("miniShell $");
@@ -81,12 +94,13 @@ int	main(int ac, char **av, char **envp)
 			else
 				waitpid(pid, NULL, 0);
 		}
-		else
+		if (get_str(str) != -1 && get_str(str) != 0)
 		{
-			cd(str);
+			built_cmd(str, get_str(str));
 			envp = find_pwd(envp);
 		}
 		free(str);
 	}
+	free_str(envp);
 	return (0);
 }

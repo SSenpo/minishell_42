@@ -21,7 +21,10 @@
 # include <term.h>
 
 int		cd(char *str);
+void	free_str(char **str);
 int		get_str(char *str);
 char	**find_pwd(char **envp);
+void	pwd_command();
+void	built_cmd(char *str, int r);
 
 #endif

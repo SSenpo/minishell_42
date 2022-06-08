@@ -14,15 +14,13 @@ char	**find_pwd(char **envp)
 		i++;
 	o = 0;
 	old_pwd = ft_split(envp[i], '=');
-	new_pwd = malloc(1000);
+	new_pwd = malloc((sizeof(char) * 200));
 	getcwd(new_pwd, 150);
 	envp[i] = ft_strjoin("PWD=", new_pwd);
 	envp[i + 1] = ft_strjoin("OLDPWD=", old_pwd[1]);
 	i = 0;
 	free(new_pwd);
-	free(old_pwd[0]);
-	free(old_pwd[1]);
-	free(old_pwd);
+	free_str(old_pwd);
 	return (envp);
 }
 
@@ -30,30 +28,26 @@ char	**find_pwd(char **envp)
 
 int	get_str(char *str)
 {
+	char **pars_str;
 	int	i;
 
 	i = 0;
 	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t'
 		|| str[i] == '\v' || str[i] == '\f' || str[i] == '\r')
 		i++;
-	if (ft_strncmp(&str[i], "cd", 2) == 0)
+	if (!str[i])
+		return (-1);
+	pars_str = ft_split(str, ' ');
+	i = 0;
+	// if (ft_strncmp(&str[i], "cd", 2) == 0)
+	if (pars_str[i])
 	{
-		return (1);
+		if (ft_strncmp(pars_str[0], "cd", 2) == 0)
+			i = 1;
+		// if (ft_strncmp(&str[i], "pwd", 3) == 0)
+		if (ft_strncmp(pars_str[0], "pwd", 3) == 0)
+			i = 2;
 	}
-	return (0);
-}
-
-// ** Выполнение функции CD ** //
-
-int cd(char *str)
-{
-	char **new_str;
-
-	new_str = ft_split(str, ' ');
-	if (chdir(new_str[1]) != 0)
-	{
-		write(2, "Error: Fail cd\n", 15);
-		return (1);
-	}
-	return (0);
+	free_str(pars_str);
+	return (i);
 }
