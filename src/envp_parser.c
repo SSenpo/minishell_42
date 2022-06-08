@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-// ** Для поиска текущего каталога, после выполнения CD ** //
+// ** ENVP перезаписываем путь после CD ** //
 
 char	**find_pwd(char **envp)
 {
@@ -39,14 +39,14 @@ int	get_str(char *str)
 		return (-1);
 	pars_str = ft_split(str, ' ');
 	i = 0;
-	// if (ft_strncmp(&str[i], "cd", 2) == 0)
 	if (pars_str[i])
 	{
-		if (ft_strncmp(pars_str[0], "cd", 2) == 0)
+		if (ft_strncmp(pars_str[0], "cd\0", 3) == 0)
 			i = 1;
-		// if (ft_strncmp(&str[i], "pwd", 3) == 0)
-		if (ft_strncmp(pars_str[0], "pwd", 3) == 0)
+		if (ft_strncmp(pars_str[0], "pwd\0", 4) == 0)
 			i = 2;
+		if (ft_strncmp(pars_str[0], "echo\0", 5) == 0)
+			i = 3;
 	}
 	free_str(pars_str);
 	return (i);

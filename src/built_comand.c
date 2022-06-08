@@ -4,13 +4,12 @@
 
 void	built_cmd(char *str, int r)
 {
-	// printf("test1\n");
 	if (r == 1)
 		cd(str);
 	if (r == 2)
-		pwd_command();
-	// if (r == 3)
-	// 	echo;
+		pwd_command(str);
+	if (r == 3)
+		echo_command(str);
 	// if (r == 4)
 	// if (r == 5)
 	// if (r == 6)
@@ -22,13 +21,11 @@ int cd(char *str)
 {
 	char **new_str;
 
-	// printf("test_cd\n");
 	new_str = ft_split(str, ' ');
 	if (new_str[1])
 	{
 		if (chdir(new_str[1]) != 0)
 		{
-			// write(2, "Error: Fail cd\n", 15);
 			printf("cd: no such file or directory: %s\n", new_str[1]);
 			free_str(new_str);
 			return (1);
@@ -42,13 +39,44 @@ int cd(char *str)
 
 // ** Выполнение функции PWD ** //
 
-void	pwd_command()
+void	pwd_command(char *str)
 {
 	char *print_pwd;
+	char **check;
 
-	// printf("test_pwd\n");
+	check = ft_split(str, ' ');
 	print_pwd = malloc(sizeof(char) * 200);
 	getcwd(print_pwd, 190);
-	printf("%s\n", print_pwd);
+	if (check[1] && (ft_strncmp(check[1], "-", 1) == 0))
+	{
+		if ((ft_strncmp(check[1], "-L\0", 3) == 0) || (ft_strncmp(check[1], "-P\0", 3) == 0) ||
+				(ft_strncmp(check[1], "-LP\0", 4) == 0))
+			printf("%s\n", print_pwd);
+		else
+			printf("pwd: usage: pwd [-LP]\n");
+	}
+	else
+		printf("%s\n", print_pwd);
 	free(print_pwd);
+	free_str(check);
+}
+
+// ** Выполнение функции ECHO ** //
+
+void	echo_command(char *str)
+{
+	char **check;
+
+	check = ft_split(str, ' ');
+	if (check[1])
+	{
+		if (ft_strncmp(check[1], "-n\0", 2) == 0)
+		{
+			if (check[2])
+				printf("%s", check[2]);
+		}
+	}
+	else
+		printf("\n");
+	free_str(check);
 }
