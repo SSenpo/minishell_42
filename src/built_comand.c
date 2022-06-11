@@ -2,17 +2,22 @@
 
 // ** Определяем билд команду ** //
 
-void	built_cmd(char *str, int r)
+char	**built_cmd(char *str, int r, char **envp)
 {
 	if (r == 1)
+	{
 		cd(str);
+		envp = find_pwd(envp);
+	}
 	if (r == 2)
 		pwd_command(str);
 	if (r == 3)
 		echo_command(str);
-	// if (r == 4)
-	// if (r == 5)
-	// if (r == 6)
+	if (r == 4)
+		envp = b_unset(str, envp);
+	if (r == 5)
+		b_env(envp);
+	return (envp);
 }
 
 // ** Выполнение функции CD ** //
@@ -79,4 +84,18 @@ void	echo_command(char *str)
 	else
 		printf("\n");
 	free_str(check);
+}
+
+// ** ENV ** //
+
+void	b_env(char **envp)
+{
+	size_t	i;
+
+	i = 0;
+	while(envp[i])
+	{
+		printf("%s\n", envp[i]);
+		i++;
+	}
 }

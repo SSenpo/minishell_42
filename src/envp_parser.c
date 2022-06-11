@@ -1,5 +1,35 @@
 #include "../includes/minishell.h"
 
+// ** ENVP маллочим и перезаписываем ** //
+
+char	**malloc_envp(char **envp)
+{
+	char	**envp_1;
+	int		i;
+	int		o;
+
+	i = -1;
+	o = -1;
+	while (envp[++i]);
+	envp_1 = malloc(sizeof(char *) * (i + 1));
+	envp_1[i + 1] = NULL;
+	i = -1;
+	while (envp[++i])
+	{
+		while (envp[i][++o]);
+		envp_1[i] = malloc(sizeof(char) * (o + 1));
+		envp_1[i][o + 1] = '\0';
+		o = 0;
+		while (envp[i][o])
+		{
+			envp_1[i][o] = envp[i][o];
+			o++;
+		}
+		o = -1;
+	}
+	return (envp_1);
+}
+
 // ** ENVP перезаписываем путь после CD ** //
 
 char	**find_pwd(char **envp)
@@ -32,11 +62,8 @@ int	get_str(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t'
-		|| str[i] == '\v' || str[i] == '\f' || str[i] == '\r')
-		i++;
 	if (!str[i])
-		return (-1);
+		return -1;
 	pars_str = ft_split(str, ' ');
 	i = 0;
 	if (pars_str[i])
@@ -47,7 +74,31 @@ int	get_str(char *str)
 			i = 2;
 		if (ft_strncmp(pars_str[0], "echo\0", 5) == 0)
 			i = 3;
+		if (ft_strncmp(pars_str[0], "unset\0", 6) == 0)
+			i = 4;
+		if (ft_strncmp(pars_str[0], "env\0", 4) == 0)
+			i = 5;
 	}
 	free_str(pars_str);
 	return (i);
 }
+
+// char	**beta_parser(char *str)
+// {
+// 	char 	**pars_str;
+// 	int		i;
+// 	int		o;
+
+// 	i = 0;
+// 	o = 0;
+// 	pars_str = ft_split(str, ' ');
+// 	while (pars_str[i])
+// 	{
+// 		if ((pars_str[i][0] == 34 || pars_str[i][0] == 39) &&
+// 			pars_str[i][1] != 34 || pars_str[i][1] != 39)
+// 		{
+// 			if (pars_str[i][ft_strlen(pars_str[i])] == 34 ||
+// 					pars_str[i][ft_strlen(pars_str[i])] == 39)
+// 		}
+// 	}
+// }

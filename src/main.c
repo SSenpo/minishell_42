@@ -83,9 +83,11 @@ int	main(int ac, char **av, char **envp)
 	if (ac != 0 && !(*av))
 		return (0);
 	// ppid = fork();
+	envp = malloc_envp(envp);
 	while (1)
 	{
 		str = readline("miniShell $");
+		// str = clean_str(str);
 		if (get_str(str) == 0)
 		{
 			pid = fork();
@@ -96,11 +98,14 @@ int	main(int ac, char **av, char **envp)
 		}
 		if (get_str(str) != -1 && get_str(str) != 0)
 		{
-			built_cmd(str, get_str(str));
-			envp = find_pwd(envp);
+			envp = built_cmd(str, get_str(str), envp);
+			// built_cmd(str, get_str(str));
+			// envp = find_pwd(envp);
 		}
+		add_history(str);
 		free(str);
 	}
+	rl_clear_history();
 	free_str(envp);
 	return (0);
 }
