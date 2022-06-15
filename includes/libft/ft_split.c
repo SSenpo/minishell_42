@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/11 14:18:12 by mmago             #+#    #+#             */
-/*   Updated: 2022/04/11 21:07:55 by mmago            ###   ########.fr       */
+/*   Updated: 2022/06/16 01:09:37 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,13 @@ static int	ft_countpart(char const *str, char c)
 
 static char	**ft_free(int i, char *str)
 {
-	while (i > 0)
-		free(&str[i--]);
-	free(str);
+	while (i > 0 && &str[i])
+	{
+		free(&str[i]);
+		i--;
+	}
+	if (str)
+		free(str);
 	return (NULL);
 }
 

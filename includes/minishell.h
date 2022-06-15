@@ -33,7 +33,11 @@ char	**malloc_envp(char **envp);
 char	**b_unset(char *str, char **envp);
 char	**del_var(char *str, char **envp);
 
-// char	*clean_str(char *str);
-// char	*sep_str(char *str, char c);
+char	*ft_string(char *str);
+int		check_count_c(char *str);
+char	*ft_sep_str(char *str, char c, int flag);
+int		ft_len_short(char *str, char c);
+char	*ft_substr_mini(char const *s, unsigned int start, size_t len);
+char	*ft_strjoin_pars(char const *s1, char const *s2);
 
 #endif

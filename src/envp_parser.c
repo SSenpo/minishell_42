@@ -82,23 +82,3 @@ int	get_str(char *str)
 	free_str(pars_str);
 	return (i);
 }
-
-// char	**beta_parser(char *str)
-// {
-// 	char 	**pars_str;
-// 	int		i;
-// 	int		o;
-
-// 	i = 0;
-// 	o = 0;
-// 	pars_str = ft_split(str, ' ');
-// 	while (pars_str[i])
-// 	{
-// 		if ((pars_str[i][0] == 34 || pars_str[i][0] == 39) &&
-// 			pars_str[i][1] != 34 || pars_str[i][1] != 39)
-// 		{
-// 			if (pars_str[i][ft_strlen(pars_str[i])] == 34 ||
-// 					pars_str[i][ft_strlen(pars_str[i])] == 39)
-// 		}
-// 	}
-// }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmago <mmago@student.21-school.ru>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/14 17:38:21 by mmago             #+#    #+#             */
+/*   Updated: 2022/06/16 01:24:54 by mmago            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	free_str(char **str)
@@ -45,9 +57,6 @@ char	*find_path(char *command, char **envp)
 	}
 	i = -1;
 	free_str(paths);
-	// while (paths[++i])
-	// 	free(paths[i]);
-	// free(paths);
 	return (0);
 }
 
@@ -87,7 +96,8 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		str = readline("miniShell $");
-		// str = clean_str(str);
+		add_history(str);
+		str = ft_string(str);
 		if (get_str(str) == 0)
 		{
 			pid = fork();
@@ -97,13 +107,10 @@ int	main(int ac, char **av, char **envp)
 				waitpid(pid, NULL, 0);
 		}
 		if (get_str(str) != -1 && get_str(str) != 0)
-		{
 			envp = built_cmd(str, get_str(str), envp);
-			// built_cmd(str, get_str(str));
-			// envp = find_pwd(envp);
-		}
-		add_history(str);
-		free(str);
+		if (str)
+			free(str);
+		// system("leaks minishell");
 	}
 	rl_clear_history();
 	free_str(envp);
