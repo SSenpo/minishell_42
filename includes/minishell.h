@@ -20,6 +20,13 @@
 # include <curses.h>
 # include <term.h>
 
+typedef struct s_data
+{
+	int	flag_path;
+	int pid_main;
+}				t_data;
+
+void	ft_loop_shell(char *str, char **envp, t_data *data);
 int		cd(char *str);
 void	b_env(char **envp);
 void	free_str(char **str);

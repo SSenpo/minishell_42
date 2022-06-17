@@ -71,15 +71,25 @@ void	pwd_command(char *str)
 void	echo_command(char *str)
 {
 	char **check;
+	int		i;
 
+	i = 0;
 	check = ft_split(str, ' ');
-	if (check[1])
+	if (check[1] && (ft_strncmp(check[1], "-n\0", 2) == 0))
 	{
-		if (ft_strncmp(check[1], "-n\0", 2) == 0)
-		{
-			if (check[2])
-				printf("%s", check[2]);
-		}
+		i = 1;
+		while (check[++i] && check[i + 1])
+			printf("%s ", check[i]);
+		if (check[i])
+			printf("%s", check[i]);
+	}
+	else if (check[1] && (ft_strncmp(check[1], "-n\0", 2) != 0))
+	{
+		while (check[++i])
+			printf("%s ", check[i]);
+		if (check[i])
+			printf("%s", check[i]);
+		printf("\n");
 	}
 	else
 		printf("\n");
