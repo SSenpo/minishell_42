@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-char	*ft_string(char *str)
+char	*ft_string(char *str, char **envp)
 {
 	char	*new_str;
 	char	*get;
@@ -19,7 +19,7 @@ char	*ft_string(char *str)
 				str = ft_substr_mini(str, 2, ft_strlen(str) - 2);
 			else
 			{
-				get = ft_sep_str(str, 39, 0);
+				get = ft_sep_str(str, 39, 0, envp);
 				new_str = ft_strjoin_pars(new_str, get);
 				str = ft_substr_mini(str, ft_len_short(str, 39) + 2,
 					ft_strlen(str) - ft_len_short(str, 39));
@@ -31,14 +31,14 @@ char	*ft_string(char *str)
 				str = ft_substr_mini(str, 2, ft_strlen(str) - 2);
 			else
 			{
-				get = ft_sep_str(str, 34, 0);
+				get = ft_sep_str(str, 34, 0, envp);
 				new_str = ft_strjoin_pars(new_str, get);
 				str = ft_substr_mini(str, ft_len_short(str, 34) + 2,
 					ft_strlen(str) - ft_len_short(str, 34));
 			}
 		}
-		if (flag == 0)
-			new_str = ft_strjoin_pars(new_str, str);
+		//if (flag == 0)
+		//	new_str = ft_strjoin_pars(new_str, str);
 		flag = check_count_c(str);
 	}
 	new_str = ft_strjoin_pars(new_str, str);
@@ -52,28 +52,28 @@ int	check_count_c(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == 39)
+		if (str[i] == 39 && str[++i])
 		{
 			while (str[i] && str[i] != 39)
 				i++;
-			if (str[i])
+			if (str[i] && str[i] == 39)
 				return (1);
-			return (-1);
+			//return (-1);
 		}
-		if (str[i] == 34)
+		if (str[i] == 34 && str[++i])
 		{
 			while (str[i] && str[i] != 34)
 				i++;
-			if (str[i])
+			if (str[i] && str[i] == 34)
 				return (2);
-			return (-1);
+			//return (-1);
 		}
 		i++;
 	}
-	return (0);
+	return (-1);
 }
 
-char	*ft_sep_str(char *str, char c, int flag)
+char	*ft_sep_str(char *str, char c, int flag, char **envp)
 {
 	char *str_new;
 	int	i;
@@ -95,6 +95,8 @@ char	*ft_sep_str(char *str, char c, int flag)
 			str_new[i++] = str[flag++];
 	}
 	str_new[i] = '\0';
+	if (str_new && c == 34)
+		str_new = ft_check_dollar(str_new, envp);
 	return (str_new);
 }
 

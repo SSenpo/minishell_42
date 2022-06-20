@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmago <mmago@student.21-school.ru>         +#+  +:+       +#+        */
+/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 17:38:21 by mmago             #+#    #+#             */
-/*   Updated: 2022/06/17 17:11:41 by mmago            ###   ########.fr       */
+/*   Updated: 2022/06/20 22:55:31 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 	{
 		str = readline("shell-1.0$ ");
 		add_history(str);
-		str = ft_string(str);
+		str = ft_string(str, envp);
 		if (get_str(str) == 0)
 		{
 			pid = fork();

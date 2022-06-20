@@ -82,3 +82,91 @@ int	get_str(char *str)
 	free_str(pars_str);
 	return (i);
 }
+
+char	*ft_check_dollar(char *str, char **envp)
+{
+	int		i;
+	int		count;
+	int		start;
+	int		flag;
+
+	i = 0;
+	count = 0;
+	start = 0;
+	flag = 0;
+	while (str[i] && str[i] != 36)
+		i++;
+	if (str[i] && str[i] == 36)
+	{
+		start = i;
+		flag = 1;
+		while (str[++i])
+		{
+			if ((str[i] > 64 && str[i] < 91) ||
+				(str[i] > 96 && str[i] < 123))
+				count++;
+			else
+				break ;
+		}
+		if (count < 1)
+			return (str);
+	}
+	if (flag == 1)
+		str = ft_change_dollar_one(str, start, count, envp);
+	return (str);
+}
+
+// **			NE RABOTAET			** //
+
+char	*ft_change_dollar_one(char *str, int start, int count, char **envp)
+{
+	char	**new_string;
+	char	*str_env;
+	int		len;
+	int		i;
+
+	i = 0;
+	str_env = ft_substr(str, start + 1, count);
+	len = ft_strlen(str_env);
+	while ((ft_strnstr(envp[i], str_env, len) == 0))
+		i++;
+	if (!envp[i])
+	{
+		free(str_env);
+		return (str);
+	}
+	free(str_env);
+	new_string = ft_split(envp[i], '=');
+	str_env = ft_strdup(new_string[1]);
+	free_str(new_string);
+	str = ft_change_dollar_two(str, str_env, start, count);
+	return (str);
+}
+
+char	*ft_change_dollar_two(char *str, char *new_str, int start, int count)
+{
+	char *full;
+	int	i;
+	int n;
+
+	i = -1;
+	full = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(new_str) - count + 1));
+	if (!full[i])
+		return (NULL);
+	while (++i < start)
+		full[i] = str[i];
+	n = -1;
+	while (new_str[++n])
+		full[i++] = new_str[n];
+	while (str[start + count + 1])
+	{
+		full[i++] = str[start + count + 1];
+		count++;
+	}
+	free(new_str);
+	free(str);
+	full[i] = '\0';
+	return (full);	
+}
+
+// **			NE RABOTAET			** //
