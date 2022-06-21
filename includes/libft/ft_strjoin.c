@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmago <mmago@student.21-school.ru>         +#+  +:+       +#+        */
+/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 12:28:36 by mmago             #+#    #+#             */
-/*   Updated: 2022/06/16 01:19:40 by mmago            ###   ########.fr       */
+/*   Updated: 2022/06/21 14:45:17 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,5 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 	}
 	s3[i] = '\0';
-	// if (s1)
-	// 	free((void *)s1);
-	// if (s2)
-	// 	free((void *)s2);
 	return (s3);
 }

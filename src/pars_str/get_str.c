@@ -37,11 +37,10 @@ char	*ft_string(char *str, char **envp)
 					ft_strlen(str) - ft_len_short(str, 34));
 			}
 		}
-		//if (flag == 0)
-		//	new_str = ft_strjoin_pars(new_str, str);
 		flag = check_count_c(str);
 	}
 	new_str = ft_strjoin_pars(new_str, str);
+	new_str = ft_check_dollar(new_str, envp);
 	return (new_str);
 }
 

@@ -96,6 +96,14 @@ void	echo_command(char *str)
 	free_str(check);
 }
 
+//char	**echo_sep(char *str)
+//{
+//	int	i;
+
+//	i = -1;
+//	while (str[++i] && str[i] != ' ')
+//}
+
 // ** ENV ** //
 
 void	b_env(char **envp)

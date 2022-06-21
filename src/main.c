@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 17:38:21 by mmago             #+#    #+#             */
-/*   Updated: 2022/06/20 22:55:31 by mmago            ###   ########.fr       */
+/*   Updated: 2022/06/21 18:51:33 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,12 @@ void	check_str(char *str, char **envp)
 	i = -1;
 	// flag = 0;
 	command = ft_split(str, ' ');
+	//if (!command[0])
+	//{
+	//	printf("shell : command not found\n");
+	//	exit(127);
+	//}
+	
 	// while (command[++i])
 	// {
 	// 	if (command[i][0] == '|')
@@ -115,8 +121,8 @@ int	main(int ac, char **av, char **envp)
 	if (data->pid_main == 0)
 		ft_loop_shell(str, envp, data);
 	waitpid(data->pid_main, NULL, 0);
-	// ft_free(envp);
 	free(data);
+	system("leaks minishell");
 	return (0);
 }
 

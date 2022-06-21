@@ -26,6 +26,10 @@ typedef struct s_data
 	int pid_main;
 }				t_data;
 
+char	*ft_check_dollar(char *str, char **envp);
+char	*ft_change_dollar_one(char *str, int start, int count, char **envp);
+char	*ft_change_dollar_two(char *str, char *new_str, int start, int count);
+
 void	ft_loop_shell(char *str, char **envp, t_data *data);
 int		cd(char *str);
 void	b_env(char **envp);
@@ -40,9 +44,12 @@ char	**malloc_envp(char **envp);
 char	**b_unset(char *str, char **envp);
 char	**del_var(char *str, char **envp);
 
-char	*ft_string(char *str);
+char	*ft_string(char *str, char **envp);
+
 int		check_count_c(char *str);
-char	*ft_sep_str(char *str, char c, int flag);
+
+char	*ft_sep_str(char *str, char c, int flag, char **envp);
+
 int		ft_len_short(char *str, char c);
 char	*ft_substr_mini(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin_pars(char const *s1, char const *s2);
