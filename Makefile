@@ -2,7 +2,7 @@ NAME = minishell
 LIB_PATH = ./includes/libft/
 LIB_NAME = ./includes/libft/libft.a
 
-CC = cc
+CC = gcc
 # gcc -fsanitize=thread флаг для теста потока
 CFLAGS = -Wall -Wextra -Werror
 RFLAGS = -lreadline -ltermcap -g -L/Users/mmago/.brew/Cellar/readline/8.1.2/lib/ -I/Users/mmago/.brew/Cellar/readline/8.1.2/include

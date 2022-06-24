@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 17:38:21 by mmago             #+#    #+#             */
-/*   Updated: 2022/06/21 18:51:33 by mmago            ###   ########.fr       */
+/*   Updated: 2022/06/24 23:19:07 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ void	check_str(char *str, char **envp)
 {
 	char	**command;
 	char	*path;
-	int		i;
+	//int		i;
 	// int		flag;
 
-	i = -1;
+	//i = -1;
 	// flag = 0;
 	command = ft_split(str, ' ');
 	//if (!command[0])
@@ -123,6 +123,7 @@ int	main(int ac, char **av, char **envp)
 	waitpid(data->pid_main, NULL, 0);
 	free(data);
 	system("leaks minishell");
+	//printf("%d\n", global_status);
 	return (0);
 }
 

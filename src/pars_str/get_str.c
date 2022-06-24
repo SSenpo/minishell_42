@@ -4,13 +4,15 @@ char	*ft_string(char *str, char **envp)
 {
 	char	*new_str;
 	char	*get;
-	int		i;
+	//int		i;
 	int		flag;
 
 	flag = check_count_c(str);
-	i = 0;
+	//i = 0;
 	new_str = ft_strdup("");
 	get = ft_strdup("");
+	if (flag < 0)
+		str = ft_check_dollar(str, envp);
 	while (flag > 0)
 	{
 		if (flag == 1)
@@ -40,7 +42,7 @@ char	*ft_string(char *str, char **envp)
 		flag = check_count_c(str);
 	}
 	new_str = ft_strjoin_pars(new_str, str);
-	new_str = ft_check_dollar(new_str, envp);
+	
 	return (new_str);
 }
 

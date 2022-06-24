@@ -37,12 +37,12 @@ char	**find_pwd(char **envp)
 	char	*new_pwd;
 	char	**old_pwd;
 	int		i;
-	int		o;
+	//int		o;
 
 	i = 0;
 	while (ft_strnstr(envp[i], "PWD", 3) == 0)
 		i++;
-	o = 0;
+	//o = 0;
 	old_pwd = ft_split(envp[i], '=');
 	new_pwd = malloc((sizeof(char) * 200));
 	getcwd(new_pwd, 150);
@@ -100,20 +100,46 @@ char	*ft_check_dollar(char *str, char **envp)
 	{
 		start = i;
 		flag = 1;
-		while (str[++i])
-		{
-			if ((str[i] > 64 && str[i] < 91) ||
-				(str[i] > 96 && str[i] < 123))
-				count++;
-			else
-				break ;
-		}
+		count = ft_dollar_count(str, count, i);
+		//if (str[i + 1] > 47 && str[i + 1] < 58)
+		//{
+		//	count++;
+		//	i = -2;
+		//}
+		//while (str[++i])
+		//{
+		//	if ((str[i] > 64 && str[i] < 91) ||
+		//		(str[i] > 96 && str[i] < 123) ||
+		//		(str[i] > 47 && str[i] < 58))
+		//		count++;
+		//	else
+		//		break ;
+		//}
 		if (count < 1)
 			return (str);
 	}
 	if (flag == 1)
 		str = ft_change_dollar_one(str, start, count, envp);
 	return (str);
+}
+
+int		ft_dollar_count(char *str, int count, int i)
+{
+	if (str[i + 1] > 47 && str[i + 1] < 58)
+	{
+		count++;
+		i = -2;
+	}
+	while (str[++i])
+	{
+		if ((str[i] > 64 && str[i] < 91) ||
+			(str[i] > 96 && str[i] < 123) ||
+			(str[i] > 47 && str[i] < 58))
+			count++;
+		else
+			break ;
+	}
+	return (count);
 }
 
 // **			RABOTAET			** //
@@ -139,6 +165,7 @@ char	*ft_change_dollar_one(char *str, int start, int count, char **envp)
 		tmp = ft_substr(str, 0, start);
 		str_env = ft_substr_mini(str, start + count + 1, ft_strlen(str) - len);
 		str = ft_strjoin_pars(tmp, str_env);
+		str = ft_check_dollar(str, envp);
 		return (str);
 	}
 	new_string = ft_split(envp[i], '=');

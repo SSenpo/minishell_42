@@ -21,10 +21,10 @@ char	**b_unset(char *str, char **envp)
 char	**del_var(char *str, char **envp)
 {
 	size_t	i;
-	size_t	n;
+	//size_t	n;
 
 	i = 0;
-	n = 0;
+	//n = 0;
 	str = (ft_split(str, ' '))[1];
 	while(envp[i])
 	{

@@ -22,9 +22,12 @@
 
 typedef struct s_data
 {
-	int	flag_path;
-	int pid_main;
+	int		flag_path;
+	int 	pid_main;
+	char	**token;
 }				t_data;
+
+int		ft_dollar_count(char *str, int count, int i);
 
 char	*ft_check_dollar(char *str, char **envp);
 char	*ft_change_dollar_one(char *str, int start, int count, char **envp);
