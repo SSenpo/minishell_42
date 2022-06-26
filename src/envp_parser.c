@@ -37,12 +37,12 @@ char	**find_pwd(char **envp)
 	char	*new_pwd;
 	char	**old_pwd;
 	int		i;
-	//int		o;
 
 	i = 0;
-	while (ft_strnstr(envp[i], "PWD", 3) == 0)
+	while (envp[i] && ft_strnstr(envp[i], "PWD", 3) == 0)
 		i++;
-	//o = 0;
+	if (!envp[i])
+		return (envp);
 	old_pwd = ft_split(envp[i], '=');
 	new_pwd = malloc((sizeof(char) * 200));
 	getcwd(new_pwd, 150);
@@ -65,6 +65,7 @@ int	get_str(char *str)
 	if (!str[i])
 		return -1;
 	pars_str = ft_split(str, ' ');
+	//pars_str = check_split_simb(pars_str);
 	i = 0;
 	if (pars_str[i])
 	{
@@ -78,6 +79,8 @@ int	get_str(char *str)
 			i = 4;
 		if (ft_strncmp(pars_str[0], "env\0", 4) == 0)
 			i = 5;
+		if (ft_strncmp(pars_str[0], "export\0", 4) == 0)
+			i = 6;
 	}
 	free_str(pars_str);
 	return (i);
@@ -101,20 +104,6 @@ char	*ft_check_dollar(char *str, char **envp)
 		start = i;
 		flag = 1;
 		count = ft_dollar_count(str, count, i);
-		//if (str[i + 1] > 47 && str[i + 1] < 58)
-		//{
-		//	count++;
-		//	i = -2;
-		//}
-		//while (str[++i])
-		//{
-		//	if ((str[i] > 64 && str[i] < 91) ||
-		//		(str[i] > 96 && str[i] < 123) ||
-		//		(str[i] > 47 && str[i] < 58))
-		//		count++;
-		//	else
-		//		break ;
-		//}
 		if (count < 1)
 			return (str);
 	}

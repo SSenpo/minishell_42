@@ -1,5 +1,15 @@
 #include "../../includes/minishell.h"
 
+//char	**get_token(char *str, char **envp, t_data *data)
+//{
+//	data.token = malloc (sizeof(char *))
+//	if (check_count_c(str) > 0)
+//	{
+
+//	}
+//	return (data.token);
+//}
+
 char	*ft_string(char *str, char **envp)
 {
 	char	*new_str;
@@ -92,8 +102,18 @@ char	*ft_sep_str(char *str, char c, int flag, char **envp)
 			count--;
 			flag++;
 		}
-		else
-			str_new[i++] = str[flag++];
+		else if (str[flag] == ' ' || str[flag] != c)
+		{
+			if (str[flag] == ' ' && count == 1)
+			{
+				str_new[i++] = 95;
+				flag++;
+			}
+			else
+				str_new[i++] = str[flag++];	
+		}
+		//else
+			//str_new[i++] = str[flag++];
 	}
 	str_new[i] = '\0';
 	if (str_new && c == 34)

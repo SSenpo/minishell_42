@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 17:38:21 by mmago             #+#    #+#             */
-/*   Updated: 2022/06/24 23:19:07 by mmago            ###   ########.fr       */
+/*   Updated: 2022/06/26 17:04:08 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,21 @@ void	check_str(char *str, char **envp)
 	path = find_path(command[0], envp);
 	if (!path)
 	{
-		if (command[0][0] == '|' || command[0][0] == '!' || command[0][0] == '&')
-			printf("shell : syntax error near unexpected token '%s'\n", command[0]);
+		if (command[0][0] == '|' || command[0][0] == '!' || command[0][0] == '&' ||
+			command[0][0] == '%' || command[0][0] == ')' || command[0][0] == '^' ||
+			command[0][0] == ';')
+		{
+			if (command[0][0] == '^')
+				printf("shell : :s^: no previous substitution\n");
+			else if (command[0][0] == '%')
+				printf("shell : fg: %%: no such job\n");
+			else if (command[0][0] == '!')
+				printf("shell : syntax error near unexpected token 'newline'\n");
+			else
+				printf("shell : syntax error near unexpected token '%s'\n", command[0]);
+		}
 		else
-			printf("shell : command not found: %s\n", command[0]);
+			printf("shell : %s: command not found\n", command[0]);
 		free_str(command);
 		exit(127);
 	}
@@ -122,7 +133,7 @@ int	main(int ac, char **av, char **envp)
 		ft_loop_shell(str, envp, data);
 	waitpid(data->pid_main, NULL, 0);
 	free(data);
-	system("leaks minishell");
+	//system("leaks minishell");
 	//printf("%d\n", global_status);
 	return (0);
 }
@@ -138,6 +149,7 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 		str = readline("shell-1.0$ ");
 		add_history(str);
 		str = ft_string(str, envp);
+		//printf("%s\n", str);
 		if (get_str(str) == 0)
 		{
 			pid = fork();

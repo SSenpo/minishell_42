@@ -9,14 +9,16 @@ char	**built_cmd(char *str, int r, char **envp)
 		cd(str);
 		envp = find_pwd(envp);
 	}
-	if (r == 2)
+	else if (r == 2)
 		pwd_command(str);
-	if (r == 3)
+	else if (r == 3)
 		echo_command(str);
-	if (r == 4)
+	else if (r == 4)
 		envp = b_unset(str, envp);
-	if (r == 5)
+	else if (r == 5)
 		b_env(envp);
+	else if (r == 6)
+		envp = exec_export(str, envp);
 	return (envp);
 }
 
@@ -96,24 +98,13 @@ void	echo_command(char *str)
 	free_str(check);
 }
 
-//char	**echo_sep(char *str)
-//{
-//	int	i;
-
-//	i = -1;
-//	while (str[++i] && str[i] != ' ')
-//}
-
 // ** ENV ** //
 
 void	b_env(char **envp)
 {
-	size_t	i;
+	int	i;
 
-	i = 0;
-	while(envp[i])
-	{
+	i = -1;
+	while(envp[++i])
 		printf("%s\n", envp[i]);
-		i++;
-	}
 }

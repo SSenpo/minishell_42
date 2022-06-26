@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-// ** Unset удаляем что-то из ENVP ** //
+// ** Unset - удаляем что-то из ENVP ** //
 
 char	**b_unset(char *str, char **envp)
 {
@@ -9,22 +9,21 @@ char	**b_unset(char *str, char **envp)
 
 	i = 0;
 	new_str = ft_split(str, ' ');
-	while (ft_strnstr(envp[i], new_str[1], ft_strlen(new_str[1])) == 0)
+	while (envp[i] &&
+		ft_strnstr(envp[i], new_str[1], ft_strlen(new_str[1])) == 0)
 		i++;
 	if (envp[i])
-	{
 		envp = del_var(str, envp);
-	}
+	else
+		printf("shell : unset: `%s': not a valid identifier\n", new_str[1]);
 	return (envp);
 }
 
 char	**del_var(char *str, char **envp)
 {
 	size_t	i;
-	//size_t	n;
 
 	i = 0;
-	//n = 0;
 	str = (ft_split(str, ' '))[1];
 	while(envp[i])
 	{

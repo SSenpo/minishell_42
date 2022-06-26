@@ -29,6 +29,12 @@ typedef struct s_data
 
 int		ft_dollar_count(char *str, int count, int i);
 
+char	**check_split_simb(char **str);
+
+// ** EXPORT ** //
+char    **exec_export(char *str, char **envp);
+char	**get_export(char *str, char **envp, int i);
+
 char	*ft_check_dollar(char *str, char **envp);
 char	*ft_change_dollar_one(char *str, int start, int count, char **envp);
 char	*ft_change_dollar_two(char *str, char *new_str, int start, int count);
