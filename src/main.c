@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 17:38:21 by mmago             #+#    #+#             */
-/*   Updated: 2022/06/26 17:04:08 by mmago            ###   ########.fr       */
+/*   Updated: 2022/06/27 21:33:52 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	check_str(char *str, char **envp)
 int	main(int ac, char **av, char **envp)
 {
 	t_data	*data;
+	int		status;
 	char	*str;
 
 	str = NULL;
@@ -131,32 +132,34 @@ int	main(int ac, char **av, char **envp)
 	data->pid_main = fork();
 	if (data->pid_main == 0)
 		ft_loop_shell(str, envp, data);
-	waitpid(data->pid_main, NULL, 0);
+	waitpid(data->pid_main, &status, 0);
 	free(data);
+	if (status > 0)
+		status /= 256;
 	//system("leaks minishell");
-	//printf("%d\n", global_status);
-	return (0);
+	exit(status);
 }
 
 void	ft_loop_shell(char *str, char **envp, t_data *data)
 {
 	int	pid;
+	int	status;
 
 	data->flag_path = 0;
+	status = 0;
 	envp = malloc_envp(envp);
 	while (1)
 	{
 		str = readline("shell-1.0$ ");
 		add_history(str);
 		str = ft_string(str, envp);
-		//printf("%s\n", str);
 		if (get_str(str) == 0)
 		{
 			pid = fork();
 			if (pid == 0)
 				check_str(str, envp);
 			else
-				waitpid(pid, NULL, 0);
+				waitpid(pid, &status, 0);
 		}
 		else if(get_str(str) != -1)
 			envp = built_cmd(str, get_str(str), envp);

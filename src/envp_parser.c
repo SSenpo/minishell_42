@@ -79,8 +79,10 @@ int	get_str(char *str)
 			i = 4;
 		if (ft_strncmp(pars_str[0], "env\0", 4) == 0)
 			i = 5;
-		if (ft_strncmp(pars_str[0], "export\0", 4) == 0)
+		if (ft_strncmp(pars_str[0], "export\0", 7) == 0)
 			i = 6;
+		if (ft_strncmp(pars_str[0], "exit\0", 5) == 0)
+			i = 7;
 	}
 	free_str(pars_str);
 	return (i);

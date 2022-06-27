@@ -19,6 +19,8 @@ char	**built_cmd(char *str, int r, char **envp)
 		b_env(envp);
 	else if (r == 6)
 		envp = exec_export(str, envp);
+	else if (r == 7)
+		ft_exit_print(str);
 	return (envp);
 }
 

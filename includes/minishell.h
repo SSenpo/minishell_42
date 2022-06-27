@@ -35,6 +35,9 @@ char	**check_split_simb(char **str);
 char    **exec_export(char *str, char **envp);
 char	**get_export(char *str, char **envp, int i);
 
+// ** EXIT ** //
+int	ft_exit_print(char *str);
+
 char	*ft_check_dollar(char *str, char **envp);
 char	*ft_change_dollar_one(char *str, int start, int count, char **envp);
 char	*ft_change_dollar_two(char *str, char *new_str, int start, int count);

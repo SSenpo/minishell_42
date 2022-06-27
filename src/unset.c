@@ -4,7 +4,7 @@
 
 char	**b_unset(char *str, char **envp)
 {
-	size_t	i;
+	int		i;
 	char	**new_str;
 
 	i = 0;
@@ -21,7 +21,7 @@ char	**b_unset(char *str, char **envp)
 
 char	**del_var(char *str, char **envp)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	str = (ft_split(str, ' '))[1];
