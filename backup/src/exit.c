@@ -1,7 +1,5 @@
 #include "../includes/minishell.h"
 
-// ** Выполнение функции EXIT ** //
-
 int	ft_exit_print(char *str)
 {
 	char	**s;
@@ -11,12 +9,6 @@ int	ft_exit_print(char *str)
 	s = ft_split(str, ' ');
 	if (s[1])
 		status_exit = ft_atoi(s[1]);
+	printf("STATUS 1 = %d\n", status_exit);
 	exit(status_exit);
-}
-
-int	ft_change_status(int status)
-{
-	if (status > 0)
-		status /= 256;
-	return (status);
 }

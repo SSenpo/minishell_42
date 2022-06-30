@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/11 14:18:12 by mmago             #+#    #+#             */
-/*   Updated: 2022/06/26 17:46:04 by mmago            ###   ########.fr       */
+/*   Updated: 2022/06/28 15:19:46 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,24 +53,24 @@ static char	**ft_free(int i, char *str)
 	return (NULL);
 }
 
-//char	**check_split_simb(char **str)
-//{
-//	int	i;
-//	int	s;
+char	**check_split_simb(char **str)
+{
+	int	i;
+	int	s;
 
-//	i = -1;
-//	s = -1;
-//	while (str[++i])
-//	{
-//		s = -1;
-//		while (str[i][++s])
-//		{
-//			if (str[i][s] == 95)
-//				str[i][s] = ' ';
-//		}
-//	}
-//	return (str);
-//}
+	i = -1;
+	s = -1;
+	while (str[++i])
+	{
+		s = -1;
+		while (str[i][++s])
+		{
+			if (str[i][s] == '\a')
+				str[i][s] = ' ';
+		}
+	}
+	return (str);
+}
 
 char	**ft_split(char const *s, char c)
 {
@@ -98,6 +98,6 @@ char	**ft_split(char const *s, char c)
 			return (ft_free(i, str[i]));
 		j = j + ft_partlen(str[i], c);
 	}
-	//str = check_split_simb(str);
+	str = check_split_simb(str);
 	return (str);
 }

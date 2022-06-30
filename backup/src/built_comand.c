@@ -1,38 +1,5 @@
 #include "../includes/minishell.h"
 
-// ** Тут будем проверять строку на builtin команды, которые нужно выполнять отдельно ** //
-
-int	get_str(char *str)
-{
-	char **pars_str;
-	int	i;
-
-	i = 0;
-	if (!str[i])
-		return -1;
-	pars_str = ft_split(str, ' ');
-	i = 0;
-	if (pars_str[i])
-	{
-		if (ft_strncmp(pars_str[0], "cd\0", 3) == 0)
-			i = 1;
-		if (ft_strncmp(pars_str[0], "pwd\0", 4) == 0)
-			i = 2;
-		if (ft_strncmp(pars_str[0], "echo\0", 5) == 0)
-			i = 3;
-		if (ft_strncmp(pars_str[0], "unset\0", 6) == 0)
-			i = 4;
-		if (ft_strncmp(pars_str[0], "env\0", 4) == 0)
-			i = 5;
-		if (ft_strncmp(pars_str[0], "export\0", 7) == 0)
-			i = 6;
-		if (ft_strncmp(pars_str[0], "exit\0", 5) == 0)
-			i = 7;
-	}
-	free_str(pars_str);
-	return (i);
-}
-
 // ** Определяем билд команду ** //
 
 char	**built_cmd(char *str, int r, char **envp)
@@ -131,4 +98,15 @@ void	echo_command(char *str)
 	else
 		printf("\n");
 	free_str(check);
+}
+
+// ** ENV ** //
+
+void	b_env(char **envp)
+{
+	int	i;
+
+	i = -1;
+	while(envp[++i])
+		printf("%s\n", envp[i]);
 }

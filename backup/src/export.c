@@ -43,14 +43,3 @@ char	**get_export(char *str, char **envp, int i)
 	free_str(envp);
 	return (new_envp);
 }
-
-// ** PRINT ENV ** //
-
-void	b_env(char **envp)
-{
-	int	i;
-
-	i = -1;
-	while(envp[++i])
-		printf("%s\n", envp[i]);
-}
