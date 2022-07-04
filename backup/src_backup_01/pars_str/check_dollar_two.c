@@ -1,20 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   check_dollar_two.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/30 22:40:47 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/04 15:25:42 by mmago            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 // ** ----------------------------------------------------- ** //
 
-char	*ft_check_dollar_mini(char *str, int i, t_data *data)
+char	*ft_check_dollar_mini(char *str, int i, char **envp, t_data *data)
 {
 	char	c;
 
@@ -34,7 +22,7 @@ char	*ft_check_dollar_mini(char *str, int i, t_data *data)
 			if (str[i] == 34 || str[i] == 39)
 				str[i - 1] = ' ';
 			else
-				str = ft_first_check_doll(str, data, (i - 1));
+				str = ft_first_check_doll(str, envp, data, (i - 1));
 			i = 0;
 		}
 		else
@@ -43,7 +31,7 @@ char	*ft_check_dollar_mini(char *str, int i, t_data *data)
 	return (str);
 }
 
-char	*ft_first_check_doll(char *str, t_data *data, int i)
+char	*ft_first_check_doll(char *str, char **envp, t_data *data, int i)
 {
 	int		count;
 	int		start;
@@ -57,12 +45,12 @@ char	*ft_first_check_doll(char *str, t_data *data, int i)
 		if (count == -1)
 		{
 			str = dollar_question(str, data, i);
-			str = ft_check_dollar_mini(str, 0, data);
+			str = ft_check_dollar_mini(str, 0, envp, data);
 		}
 		else if (count < 1)
 			return (str);
 		else
-			str = ft_first_change_doll(str, start, count, data);
+			str = ft_first_change_doll(str, start, count, envp, data);
 	}
 	return (str);
 }
@@ -109,8 +97,6 @@ char	*dollar_question(char *str, t_data *data, int i)
 	str_pid = ft_itoa(child_pid);
 	child_pid = 0;
 	new_str = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(str_pid)));
-	if (!new_str)
-		return (str);
 	while (str[++start])
 	{
 		if (start == (i - 1))
@@ -130,7 +116,7 @@ char	*dollar_question(char *str, t_data *data, int i)
 	return (new_str);
 }
 
-char	*ft_first_change_doll(char *str, int start, int count, t_data *data)
+char	*ft_first_change_doll(char *str, int start, int count, char **envp, t_data *data)
 {
 	char	**new_string;
 	char	*str_env;
@@ -142,23 +128,23 @@ char	*ft_first_change_doll(char *str, int start, int count, t_data *data)
 	str_env = ft_substr(str, start + 1, count);
 	tmp = ft_strjoin(str_env, "=");
 	len = ft_strlen(tmp);
-	while (data->envp[i] && (ft_strnstr(data->envp[i], tmp, len) == 0))
+	while (envp[i] && (ft_strnstr(envp[i], tmp, len) == 0))
 		i++;
 	free(tmp);
 	free(str_env);
-	if (!data->envp[i])
+	if (!envp[i])
 	{
 		tmp = ft_substr(str, 0, start);
 		str_env = ft_substr_mini(str, start + count + 1, ft_strlen(str) - len);
 		str = ft_strjoin_pars(tmp, str_env);
-		str = ft_check_dollar_mini(str, 0, data);
+		str = ft_check_dollar_mini(str, 0, envp, data);
 		return (str);
 	}
-	new_string = ft_split(data->envp[i], '=');
+	new_string = ft_split(envp[i], '=');
 	str_env = ft_strdup(new_string[1]);
 	free_str(new_string);
 	str = ft_change_dollar_two(str, str_env, start, count);
-	str = ft_check_dollar_mini(str, 0, data);
+	str = ft_check_dollar_mini(str, 0, envp, data);
 	return (str);
 }
 

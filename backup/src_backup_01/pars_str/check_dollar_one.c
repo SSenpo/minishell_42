@@ -1,20 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   check_dollar_one.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/30 22:40:50 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/04 15:26:31 by mmago            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 // ** ----------------------------------------------------- ** //
 
-char	*ft_check_dollar(char *str, t_data *data)
+char	*ft_check_dollar(char *str, char **envp, t_data *data)
 {
 	int		i;
 	int		count;
@@ -35,17 +23,17 @@ char	*ft_check_dollar(char *str, t_data *data)
 		if (count == -1)
 		{
 			str = dollar_question(str, data, i);
-			str = ft_check_dollar(str, data);
+			str = ft_check_dollar(str, envp, data);
 		}
 		if (count < 1)
 			return (str);
 	}
 	if (flag == 1)
-		str = ft_change_dollar_one(str, start, count, data);
+		str = ft_change_dollar_one(str, start, count, envp, data);
 	return (str);
 }
 
-char	*ft_change_dollar_one(char *str, int start, int count, t_data *data)
+char	*ft_change_dollar_one(char *str, int start, int count, char **envp, t_data *data)
 {
 	char	**new_string;
 	char	*str_env;
@@ -57,23 +45,23 @@ char	*ft_change_dollar_one(char *str, int start, int count, t_data *data)
 	str_env = ft_substr(str, start + 1, count);
 	tmp = ft_strjoin(str_env, "=");
 	len = ft_strlen(tmp);
-	while (data->envp[i] && (ft_strnstr(data->envp[i], tmp, len) == 0))
+	while (envp[i] && (ft_strnstr(envp[i], tmp, len) == 0))
 		i++;
 	free(tmp);
 	free(str_env);
-	if (!data->envp[i])
+	if (!envp[i])
 	{
 		tmp = ft_substr(str, 0, start);
 		str_env = ft_substr_mini(str, start + count + 1, ft_strlen(str) - len);
 		str = ft_strjoin_pars(tmp, str_env);
-		str = ft_check_dollar(str, data);
+		str = ft_check_dollar(str, envp, data);
 		return (str);
 	}
-	new_string = ft_split(data->envp[i], '=');
+	new_string = ft_split(envp[i], '=');
 	str_env = ft_strdup(new_string[1]);
 	free_str(new_string);
 	str = ft_change_dollar_two(str, str_env, start, count);
-	str = ft_check_dollar(str, data);
+	str = ft_check_dollar(str, envp, data);
 	return (str);
 }
 

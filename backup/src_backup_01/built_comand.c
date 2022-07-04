@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   built_comand.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/30 22:41:05 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/04 15:39:13 by mmago            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 // ** Тут будем проверять строку на builtin команды, которые нужно выполнять отдельно ** //
@@ -47,26 +35,26 @@ int	get_str(char *str)
 
 // ** Определяем билд команду ** //
 
-char	**built_cmd(char *str, int r, t_data *data)
+char	**built_cmd(char *str, int r, char **envp)
 {
 	if (r == 1)
 	{
 		cd(str);
-		data->envp = find_pwd(data);
+		envp = find_pwd(envp);
 	}
 	else if (r == 2)
 		pwd_command(str);
 	else if (r == 3)
 		echo_command(str);
 	else if (r == 4)
-		data->envp = b_unset(str, data);
+		envp = b_unset(str, envp);
 	else if (r == 5)
-		b_env(data);
+		b_env(envp);
 	else if (r == 6)
-		data->envp = exec_export(str, data);
+		envp = exec_export(str, envp);
 	else if (r == 7)
 		ft_exit_print(str);
-	return (data->envp);
+	return (envp);
 }
 
 // ** Выполнение функции CD ** //

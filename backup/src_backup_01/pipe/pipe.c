@@ -1,20 +1,24 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/30 22:40:56 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/04 19:34:46 by mmago            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/minishell.h"
+
+void	free_str(char **str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		free(str[i]);
+	free(str);
+}
+
+void	error(void)
+{
+	perror("Error");
+	exit(EXIT_FAILURE);
+}
 
 // ** Тут выполнение команды Shell ** //
 
-char	*find_path(char *command, t_data *data)
+char	*find_path(char *command, char **envp)
 {
 	char	**paths;
 	char	*path;
@@ -22,9 +26,9 @@ char	*find_path(char *command, t_data *data)
 	int		i;
 
 	i = 0;
-	while (ft_strnstr(data->envp[i], "PATH", 4) == 0)
+	while (ft_strnstr(envp[i], "PATH", 4) == 0)
 		i++;
-	paths = ft_split(data->envp[i] + 5, ':');
+	paths = ft_split(envp[i] + 5, ':');
 	i = 0;
 	while (paths[i])
 	{
@@ -44,13 +48,13 @@ char	*find_path(char *command, t_data *data)
 	return (0);
 }
 
-void	check_str(char *str, t_data *data)
+void	check_str(char *str, char **envp)
 {
 	char	**command;
 	char	*path;
 
 	command = ft_split(str, ' ');
-	path = find_path(command[0], data);
+	path = find_path(command[0], envp);
 	if (!path)
 	{
 		if (command[0][0] == '|' || command[0][0] == '!' || command[0][0] == '&' ||
@@ -71,6 +75,6 @@ void	check_str(char *str, t_data *data)
 		free_str(command);
 		exit(127);
 	}
-	if (execve(path, command, data->envp) == -1)
+	if (execve(path, command, envp) == -1)
 		error();
 }
