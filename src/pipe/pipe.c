@@ -6,11 +6,28 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:56 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/04 19:34:46 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/05 21:48:04 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+// void	ft_make_a_pipe(char *str, t_data *data);
+// {
+
+// }
+
+// void	ft_check_str_for_pipe(char *str, t_data *data)
+// {
+// 	int	i;
+	
+// 	i = -1;
+// 	while(str[++i])
+// 	{
+// 		if (str[i] == 124)
+// 			data->pipe_flag++;
+// 	}
+// }
 
 // ** Тут выполнение команды Shell ** //
 

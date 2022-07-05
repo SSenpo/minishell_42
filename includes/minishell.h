@@ -26,6 +26,7 @@
 
 typedef struct s_data
 {
+	// struct sigaction act;
 	char	**envp;
 	char	*get_string;
 	char	get_simb;
@@ -35,7 +36,14 @@ typedef struct s_data
 	int		status;
 	int		get_pipe;
 	int		*fd_pipe;
+	int		pipe_flag;
 }				t_data;
+
+// void	ft_check_str_for_pipe(char *str, t_data *data);
+// void	ft_make_a_pipe(char *str, t_data *data);
+
+void	handler(int signum);
+void	handler_two(int signum);
 
 char	*get_str_part_two(char *get, char *new_str, t_data *data);
 
