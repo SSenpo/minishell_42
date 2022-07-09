@@ -6,93 +6,28 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:56 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/09 22:04:13 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/05 21:48:04 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_close_pipe(t_data *data)
-{
-	int count;
-	int	i;
+// void	ft_make_a_pipe(char *str, t_data *data);
+// {
 
-	i = -1;
-	count = -1;
-	while (++count < data->pipe_flag)
-	{
-		while (++i < 2)
-		{
-			close(data->fd_pipe[count][i]);
-		}
-		i = -1;
-	}
-	free(data->fd_pipe);
-}
+// }
 
-void	ft_procces(t_data *data)
-{
-	if (data->i == 0)
-	{
-		dup2(data->fd_pipe[0][1], 1);
-		ft_close_pipe(data);
-	}
-	else if (data->i == data->pipe_flag)
-	{
-		dup2(data->fd_pipe[data->i - 1][0], 0);
-		ft_close_pipe(data);
-	}
-	else
-	{
-		dup2(data->fd_pipe[data->i - 1][0], 0);
-		dup2(data->fd_pipe[data->i][1], 1);
-		ft_close_pipe(data);
-	}
-	check_str(data->pipe_part_split[data->i], data);
-}
-
-void	ft_make_a_pipe(char *str, t_data *data)
-{
-	int	count;
-
-	count = -1;
-	data->i = -1;
-	data->num_pipe = 0;
-	data->pipe_part_split = ft_split(str, '|');
-	data->fd_pipe = malloc(sizeof(int *) * data->pipe_flag);
-	while (++count < data->pipe_flag)
-	{
-		data->fd_pipe[count] = malloc(sizeof(int) * 2);
-		pipe(data->fd_pipe[count]);
-	}
-	while (data->pipe_part_split[++data->i])
-	{
-		data->pipe_fork = fork();
-		if (data->pipe_fork == 0)
-			ft_procces(data);
-	}
-	ft_close_pipe(data);
-	while (data->stop_procces < data->i)
-	{
-		waitpid(-1, &data->status, 0);
-		data->status = ft_change_status(data->status);
-		data->stop_procces++;
-	}
-	free_str(data->pipe_part_split);
-	return ;
-}
-
-void	ft_check_str_for_pipe(char *str, t_data *data)
-{
-	int	i;
+// void	ft_check_str_for_pipe(char *str, t_data *data)
+// {
+// 	int	i;
 	
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] == 124)
-			data->pipe_flag++;
-	}
-}
+// 	i = -1;
+// 	while(str[++i])
+// 	{
+// 		if (str[i] == 124)
+// 			data->pipe_flag++;
+// 	}
+// }
 
 // ** Тут выполнение команды Shell ** //
 
@@ -123,7 +58,7 @@ char	*find_path(char *command, t_data *data)
 	}
 	i = -1;
 	free_str(paths);
-	return (NULL);
+	return (0);
 }
 
 void	check_str(char *str, t_data *data)

@@ -26,8 +26,8 @@
 
 typedef struct s_data
 {
+	// struct sigaction act;
 	char	**envp;
-	char	**pipe_part_split;
 	char	*get_string;
 	char	get_simb;
 	int		flag_path;
@@ -35,21 +35,12 @@ typedef struct s_data
 	int		flag;
 	int		status;
 	int		get_pipe;
-	int		**fd_pipe;
-	int		check_pipe_flag;
+	int		*fd_pipe;
 	int		pipe_flag;
-	int		pipe_fork;
-	int		num_pipe;
-	int		i;
-	int		stop_procces;
 }				t_data;
 
-// static int		*g_status;
-
-void	ft_check_str_for_pipe(char *str, t_data *data);
-void	ft_make_a_pipe(char *str, t_data *data);
-void	ft_procces(t_data *data);
-void	ft_data_null(t_data * data);
+// void	ft_check_str_for_pipe(char *str, t_data *data);
+// void	ft_make_a_pipe(char *str, t_data *data);
 
 void	handler(int signum);
 void	handler_two(int signum);
