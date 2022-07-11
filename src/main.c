@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 17:38:21 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/09 22:25:32 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/12 00:37:00 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ static int		*g_status;
 int	main(int ac, char **av, char **envp)
 {
 	t_data	*data;
-	// char	*str;
 
-	// str = NULL;
 	data = malloc(sizeof(t_data));
 	ft_data_null(data);
 	if (!data)

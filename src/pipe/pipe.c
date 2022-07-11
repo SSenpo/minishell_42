@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:56 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/09 22:04:13 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/12 00:26:43 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_close_pipe(t_data *data)
 		{
 			close(data->fd_pipe[count][i]);
 		}
+		free(data->fd_pipe[count]);
 		i = -1;
 	}
 	free(data->fd_pipe);
@@ -150,7 +151,6 @@ void	check_str(char *str, t_data *data)
 		}
 		else
 			printf("shell : %s: command not found\n", command[0]);
-		free_str(command);
 		exit(127);
 	}
 	if (execve(path, command, data->envp) == -1)

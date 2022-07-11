@@ -24,6 +24,8 @@
 # define STDOUT 		1
 # define STDERR 		2
 
+// int		*g_status;
+
 typedef struct s_data
 {
 	char	**envp;
@@ -44,8 +46,6 @@ typedef struct s_data
 	int		stop_procces;
 }				t_data;
 
-// static int		*g_status;
-
 void	ft_check_str_for_pipe(char *str, t_data *data);
 void	ft_make_a_pipe(char *str, t_data *data);
 void	ft_procces(t_data *data);
@@ -65,8 +65,8 @@ char    **exec_export(char *str, t_data *data);
 char	**get_export(char *str, t_data *data, int i);
 
 // ** EXIT ** //
-int	ft_exit_print(char *str);
-int	ft_change_status(int status);
+int		ft_exit_print(char *str);
+int		ft_change_status(int status);
 
 char	*ft_check_dollar(char *str, t_data *data);
 char	*ft_change_dollar_one(char *str, int start, int count, t_data *data);

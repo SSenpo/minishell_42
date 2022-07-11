@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:54 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/09 22:19:19 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/12 00:20:44 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ char	*ft_string(char *str, t_data *data)
 
 	data->flag = check_count_c(str);
 	new_str = ft_strdup("");
-	get = ft_strdup("");
-	// new_str = "\0";
-	// get = "\0";
+	get = NULL;
 	data->get_string = ft_strdup(str);
 	free(str);
 	if (data->flag < 0)
