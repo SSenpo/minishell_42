@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:54 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/17 21:06:20 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/12 00:20:44 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ char	*ft_sep_str(char *str, char c, int flag, t_data *data)
 		}
 	}
 	str_new[i] = '\0';
-	printf("STR-NEW = %s\n", str_new);
 	if (str_new && c == 34)
 		str_new = ft_check_dollar(str_new, data);
 	return (str_new);

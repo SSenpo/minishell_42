@@ -40,16 +40,11 @@ typedef struct s_data
 	int		**fd_pipe;
 	int		check_pipe_flag;
 	int		pipe_flag;
-	int		redir_out_flag;
-	int		redir_in_flag;
-	int		duble_redirect_flag;
 	int		pipe_fork;
 	int		num_pipe;
 	int		i;
 	int		stop_procces;
 }				t_data;
-
-int		ft_is_pipe_or_redirect(t_data *data);
 
 void	ft_check_str_for_pipe(char *str, t_data *data);
 void	ft_make_a_pipe(char *str, t_data *data);
@@ -72,7 +67,6 @@ char	**get_export(char *str, t_data *data, int i);
 // ** EXIT ** //
 int		ft_exit_print(char *str);
 int		ft_change_status(int status);
-int		check_num_or_not(const char *str);
 
 char	*ft_check_dollar(char *str, t_data *data);
 char	*ft_change_dollar_one(char *str, int start, int count, t_data *data);

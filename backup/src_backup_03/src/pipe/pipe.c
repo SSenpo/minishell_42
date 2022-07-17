@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:56 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/17 21:06:48 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/12 00:26:43 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,23 +85,13 @@ void	ft_make_a_pipe(char *str, t_data *data)
 
 void	ft_check_str_for_pipe(char *str, t_data *data)
 {
-	int		i;
-	char	c;
+	int	i;
 	
 	i = -1;
-	c = 60;
 	while (str[++i])
 	{
 		if (str[i] == 124)
 			data->pipe_flag++;
-		if (str[i] == c || str[i] == (c + 2))
-		{
-			if (str[i + 1] && str[i] == c && str[i + 1] != c)
-				data->redir_in_flag++;
-			else if (str[i + 1] && str[i] == c + 2 &&
-				str[i + 1] != c + 2)
-				data->redir_out_flag++;
-		}
 	}
 }
 
@@ -143,8 +133,6 @@ void	check_str(char *str, t_data *data)
 	char	*path;
 
 	command = ft_split(str, ' ');
-	command = check_split_simb(command);
-	printf("STR-NEW = %s\n", command[0]);
 	path = find_path(command[0], data);
 	if (!path)
 	{

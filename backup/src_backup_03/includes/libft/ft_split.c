@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/11 14:18:12 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/17 20:08:16 by mmago            ###   ########.fr       */
+/*   Updated: 2022/06/28 15:19:46 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,6 @@ char	**ft_split(char const *s, char c)
 			return (ft_free(i, str[i]));
 		j = j + ft_partlen(str[i], c);
 	}
-	// str = check_split_simb(str);
+	str = check_split_simb(str);
 	return (str);
 }

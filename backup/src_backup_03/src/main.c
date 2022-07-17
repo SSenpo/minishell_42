@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 17:38:21 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/16 13:50:15 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/12 00:37:00 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,8 @@ void	ft_data_null(t_data * data)
 	data->num_pipe = 0;
 	data->i = 0;
 	data->stop_procces = 0;
-	data->redir_out_flag = 0;
-	data->redir_in_flag = 0;
-	data->duble_redirect_flag = 0;
 }
 
-int		ft_is_pipe_or_redirect(t_data *data)
-{
-	if (data->pipe_flag > 0 || data->redir_in_flag > 0 ||
-		data->redir_out_flag > 0)
-	{
-		if (data->pipe_flag > 0 &&
-			(data->redir_in_flag == 0 && data->redir_out_flag == 0))
-			return (1);
-		else if (data->pipe_flag > 0 &&
-			(data->redir_in_flag > 0 || data->redir_out_flag > 0))
-			return (2);
-		else if (data->pipe_flag == 0)
-			return (3);
-	}
-	return (0);
-}
 // ** Мейник, считываем с помощью редлайна строку в нашей оболочке ** //
 
 static int		*g_status;
@@ -71,7 +52,6 @@ int	main(int ac, char **av, char **envp)
 	data->status = 1;
 	data->get_string = NULL;
 	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 	if (1)
 	{
 		data->pid_main = fork();
@@ -92,7 +72,6 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 
 	data->envp = malloc_envp(envp);
 	signal(SIGINT, handler_two);
-	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		ft_data_null(data);
@@ -100,26 +79,23 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 		add_history(str);
 		str = ft_string(str, data);
 		ft_check_str_for_pipe(str, data);
-		if (ft_is_pipe_or_redirect(data) < 1)
+		if (get_str(str) == 0 && data->pipe_flag < 1)
 		{
-			if (get_str(str) == 0)
+			pid = fork();
+			if (pid == 0)
+				check_str(str, data);
+			else
 			{
-				pid = fork();
-				if (pid == 0)
-					check_str(str, data);
-				else
-				{
-					waitpid(pid, &data->status, 0);
-					data->status = ft_change_status(data->status);
-				}
-			}
-			else if(get_str(str) > 0)
-			{
-				data->envp = built_cmd(str, get_str(str), data);
-				data->status = 0;
+				waitpid(pid, &data->status, 0);
+				data->status = ft_change_status(data->status);
 			}
 		}
-		else if (ft_is_pipe_or_redirect(data) > 0)
+		else if(get_str(str) != -1 && data->pipe_flag < 1)
+		{
+			data->envp = built_cmd(str, get_str(str), data);
+			data->status = 0;
+		}
+		else
 			ft_make_a_pipe(str, data);
 		if (str)
 			free(str);

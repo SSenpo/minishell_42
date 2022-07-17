@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:05 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/17 20:17:22 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/04 15:39:13 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ int	get_str(char *str)
 	{
 		if (ft_strncmp(pars_str[0], "cd\0", 3) == 0)
 			i = 1;
-		else if (ft_strncmp(pars_str[0], "pwd\0", 4) == 0)
+		if (ft_strncmp(pars_str[0], "pwd\0", 4) == 0)
 			i = 2;
-		else if (ft_strncmp(pars_str[0], "echo\0", 5) == 0)
+		if (ft_strncmp(pars_str[0], "echo\0", 5) == 0)
 			i = 3;
-		else if (ft_strncmp(pars_str[0], "unset\0", 6) == 0)
+		if (ft_strncmp(pars_str[0], "unset\0", 6) == 0)
 			i = 4;
-		else if (ft_strncmp(pars_str[0], "env\0", 4) == 0)
+		if (ft_strncmp(pars_str[0], "env\0", 4) == 0)
 			i = 5;
-		else if (ft_strncmp(pars_str[0], "export\0", 7) == 0)
+		if (ft_strncmp(pars_str[0], "export\0", 7) == 0)
 			i = 6;
-		else if (ft_strncmp(pars_str[0], "exit\0", 5) == 0)
+		if (ft_strncmp(pars_str[0], "exit\0", 5) == 0)
 			i = 7;
 	}
 	free_str(pars_str);
@@ -76,7 +76,6 @@ int cd(char *str)
 	char **new_str;
 
 	new_str = ft_split(str, ' ');
-	new_str = check_split_simb(new_str);
 	if (new_str[1])
 	{
 		if (chdir(new_str[1]) != 0)
@@ -100,7 +99,6 @@ void	pwd_command(char *str)
 	char **check;
 
 	check = ft_split(str, ' ');
-	check = check_split_simb(check);
 	print_pwd = malloc(sizeof(char) * 200);
 	getcwd(print_pwd, 190);
 	if (check[1] && (ft_strncmp(check[1], "-", 1) == 0))
@@ -126,7 +124,6 @@ void	echo_command(char *str)
 
 	i = 0;
 	check = ft_split(str, ' ');
-	check = check_split_simb(check);
 	if (check[1] && (ft_strncmp(check[1], "-n\0", 2) == 0))
 	{
 		i = 1;
