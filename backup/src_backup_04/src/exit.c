@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:12 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/18 21:20:44 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/17 21:04:06 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ int	ft_exit_print(char *str)
 		else
 		{
 			status_exit = 255;
-			ft_putstr_fd("shell : exit: ", 2);
-			ft_putstr_fd(s[1], 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
+			printf("shell : exit: %s: numeric argument required\n", s[1]);
 		}
 	}
 	exit(status_exit);

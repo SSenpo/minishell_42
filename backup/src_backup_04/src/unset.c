@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:18 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/18 21:23:40 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/17 20:27:11 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,7 @@ char	**b_unset(char *str, t_data *data)
 	else
 	{
 		if (new_str[1])
-		{
-			ft_putstr_fd("shell : unset: `", 2);
-			ft_putstr_fd(new_str[1], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-		}
+			printf("shell : unset: `%s': not a valid identifier\n", new_str[1]);
 	}
 	free_str(new_str);
 	return (data->envp);
@@ -48,6 +44,7 @@ char	**del_var(char *str, t_data *data)
 	int	i;
 
 	i = 0;
+	// str = (ft_split(str, ' '))[1];
 	while(data->envp[i])
 	{
 		if ((ft_strnstr(data->envp[i], str, ft_strlen(str)) == 0))

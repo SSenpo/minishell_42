@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:14 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/18 21:42:29 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/17 21:05:36 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ char    **exec_export(char *str, t_data *data)
 	if (new_str[1] && (ft_strnstr(new_str[1], "-p\0", 3) != 0))
 	{
 		while (data->envp[++i])
-		{
-			ft_putstr_fd("declare -x ", 1);
-			ft_putstr_fd(data->envp[i], 6);
-		}
+			printf("declare -x %s\n", data->envp[i]);
 	}
 	else
 	{
@@ -51,29 +48,17 @@ char	**get_export(char *str, t_data *data, int i)
 {
 	char	**new_envp;
 	int		s;
-	int		check_str;
 
 	s = -1;
-	check_str = 0;
-	while (str[++s])
-	{
-		if (str[s] == '=')
-			check_str = 1;
-	}
-	if (check_str > 0)
-	{
-		s = -1;
-		new_envp = malloc(sizeof(char *) * (i));
-		if (!new_envp)
-			return (data->envp);
-		while (data->envp[++s])
-			new_envp[s] = ft_strdup(data->envp[s]);
-		new_envp[s] = ft_strdup(str);
-		new_envp[s + 1] = NULL;
-		free_str(data->envp);
-		return (new_envp);
-	}
-	return (data->envp);
+	new_envp = malloc(sizeof(char *) * (i));
+	if (!new_envp)
+		return (data->envp);
+	while (data->envp[++s])
+		new_envp[s] = ft_strdup(data->envp[s]);
+	new_envp[s] = ft_strdup(str);
+	new_envp[s + 1] = NULL;
+	free_str(data->envp);
+	return (new_envp);
 }
 
 // ** PRINT ENV ** //
@@ -84,5 +69,5 @@ void	b_env(t_data *data)
 
 	i = -1;
 	while(data->envp[++i])
-		ft_putstr_fd(data->envp[i], 6);
+		printf("%s\n", data->envp[i]);
 }

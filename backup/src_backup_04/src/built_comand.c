@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:05 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/18 21:25:27 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/17 20:17:22 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,7 @@ int cd(char *str)
 	{
 		if (chdir(new_str[1]) != 0)
 		{
-			ft_putstr_fd("cd: no such file or directory: ", 2);
-			ft_putstr_fd(new_str[1], 6);
+			printf("cd: no such file or directory: %s\n", new_str[1]);
 			free_str(new_str);
 			return (1);
 		}
@@ -108,12 +107,12 @@ void	pwd_command(char *str)
 	{
 		if ((ft_strncmp(check[1], "-L\0", 3) == 0) || (ft_strncmp(check[1], "-P\0", 3) == 0) ||
 				(ft_strncmp(check[1], "-LP\0", 4) == 0))
-			ft_putstr_fd(print_pwd, 6);
+			printf("%s\n", print_pwd);
 		else
-			ft_putstr_fd("pwd: usage: pwd [-LP]\n", 2);
+			printf("pwd: usage: pwd [-LP]\n");
 	}
 	else
-		ft_putstr_fd(print_pwd, 6);
+		printf("%s\n", print_pwd);
 	free(print_pwd);
 	free_str(check);
 }
@@ -132,25 +131,19 @@ void	echo_command(char *str)
 	{
 		i = 1;
 		while (check[++i] && check[i + 1])
-		{
-			ft_putstr_fd(check[i], 2);
-			ft_putstr_fd(" ", 2);
-		}
+			printf("%s ", check[i]);
 		if (check[i])
-			ft_putstr_fd(check[i], 2);
+			printf("%s", check[i]);
 	}
 	else if (check[1] && (ft_strncmp(check[1], "-n\0", 2) != 0))
 	{
 		while (check[++i])
-		{
-			ft_putstr_fd(check[i], 2);
-			ft_putstr_fd(" ", 2);
-		}
+			printf("%s ", check[i]);
 		if (check[i])
-			ft_putstr_fd(check[i], 2);
-		ft_putstr_fd("\n", 2);
+			printf("%s", check[i]);
+		printf("\n");
 	}
 	else
-		ft_putstr_fd("\n", 2);
+		printf("\n");
 	free_str(check);
 }

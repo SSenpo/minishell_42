@@ -1,37 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mmago <mmago@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/12 16:12:43 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/18 21:13:40 by mmago            ###   ########.fr       */
+/*   Created: 2021/10/04 15:02:35 by mmago             #+#    #+#             */
+/*   Updated: 2022/04/11 21:07:31 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+int	ft_isascii(int c)
 {
-	size_t	i;
-
-	i = 0;
-	if (!s)
-		return ;
-	if (fd == 6)
-	{
-		while (s[i])
-		{
-			write(1, &s[i], 1);
-			i++;
-		}
-		write(1, "\n", 1);
-		return ;
-	}
-	while (s[i])
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
+	return (c >= 0 && c <= 127);
 }

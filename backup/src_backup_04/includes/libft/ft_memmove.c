@@ -1,37 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mmago <mmago@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/12 16:12:43 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/18 21:13:40 by mmago            ###   ########.fr       */
+/*   Created: 2021/10/04 17:30:03 by mmago             #+#    #+#             */
+/*   Updated: 2022/04/11 21:07:46 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	size_t	i;
+	unsigned char	*a;
+	unsigned char	*b;
 
-	i = 0;
-	if (!s)
-		return ;
-	if (fd == 6)
+	a = (unsigned char *)dst;
+	b = (unsigned char *)src;
+	if (a < b)
 	{
-		while (s[i])
-		{
-			write(1, &s[i], 1);
-			i++;
-		}
-		write(1, "\n", 1);
-		return ;
+		while (len--)
+			*a++ = *b++;
 	}
-	while (s[i])
+	else if (a > b)
 	{
-		write(fd, &s[i], 1);
-		i++;
+		a += len;
+		b += len;
+		while (len--)
+			*--a = *--b;
 	}
+	return (dst);
 }

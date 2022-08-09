@@ -1,37 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mmago <mmago@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/12 16:12:43 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/18 21:13:40 by mmago            ###   ########.fr       */
+/*   Created: 2021/10/05 15:48:45 by mmago             #+#    #+#             */
+/*   Updated: 2022/04/11 21:07:56 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+char	*ft_strchr(const char *s, int c)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	if (!s)
-		return ;
-	if (fd == 6)
-	{
-		while (s[i])
-		{
-			write(1, &s[i], 1);
-			i++;
-		}
-		write(1, "\n", 1);
-		return ;
-	}
 	while (s[i])
 	{
-		write(fd, &s[i], 1);
+		if (s[i] == (char )c)
+			return ((char *)(s + i));
 		i++;
 	}
+	if ((char )c == '\0')
+		return ((char *)(s + i));
+	return (NULL);
 }

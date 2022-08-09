@@ -1,37 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mmago <mmago@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/12 16:12:43 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/18 21:13:40 by mmago            ###   ########.fr       */
+/*   Created: 2021/10/04 18:19:03 by mmago             #+#    #+#             */
+/*   Updated: 2022/04/11 21:07:44 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	size_t	i;
+	unsigned char	*p;
+	unsigned char	d;
 
-	i = 0;
-	if (!s)
-		return ;
-	if (fd == 6)
+	p = (unsigned char *)s;
+	d = (unsigned char)c;
+	while (n--)
 	{
-		while (s[i])
+		if (*p == d)
 		{
-			write(1, &s[i], 1);
-			i++;
+			return (p);
 		}
-		write(1, "\n", 1);
-		return ;
+		p++;
 	}
-	while (s[i])
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
+	return (NULL);
 }

@@ -6,12 +6,11 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 17:38:21 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/09 20:29:35 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/16 13:50:15 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../includes/global.h"
 
 void	ft_data_null(t_data * data)
 {
@@ -28,30 +27,27 @@ void	ft_data_null(t_data * data)
 	data->redir_out_flag = 0;
 	data->redir_in_flag = 0;
 	data->duble_redirect_flag = 0;
-	data->redir_in_str = NULL;
-	data->redir_out_str = NULL;
 }
 
-// int		ft_is_pipe_or_redirect(t_data *data)
-// {
-// 	if (data->pipe_flag > 0 || data->redir_in_flag > 0 ||
-// 		data->redir_out_flag > 0)
-// 	{
-// 		if (data->pipe_flag > 0 &&
-// 			(data->redir_in_flag == 0 && data->redir_out_flag == 0))
-// 			return (1);
-// 		else if (data->pipe_flag > 0 &&
-// 			(data->redir_in_flag > 0 || data->redir_out_flag > 0))
-// 			return (2);
-// 		else if (data->pipe_flag == 0)
-// 			return (3);
-// 	}
-// 	return (0);
-// }
-
+int		ft_is_pipe_or_redirect(t_data *data)
+{
+	if (data->pipe_flag > 0 || data->redir_in_flag > 0 ||
+		data->redir_out_flag > 0)
+	{
+		if (data->pipe_flag > 0 &&
+			(data->redir_in_flag == 0 && data->redir_out_flag == 0))
+			return (1);
+		else if (data->pipe_flag > 0 &&
+			(data->redir_in_flag > 0 || data->redir_out_flag > 0))
+			return (2);
+		else if (data->pipe_flag == 0)
+			return (3);
+	}
+	return (0);
+}
 // ** Мейник, считываем с помощью редлайна строку в нашей оболочке ** //
 
-// static int		*g_status;
+static int		*g_status;
 
 int	main(int ac, char **av, char **envp)
 {
@@ -62,13 +58,13 @@ int	main(int ac, char **av, char **envp)
 	if (!data)
 	{
 		free(data);
-		ft_putstr_fd("Error: malloc\n", 2);
+		write(1, "Error: malloc\n", 14);
 		return (-1);
 	}
 	if (ac != 0 && !(*av))
 	{
 		free(data);
-		ft_putstr_fd("Error: wrong number of argument's\n", 2);
+		write(1, "Error: wrong number of argument's\n", 34);
 		return (0);
 	}
 	g_status = &data->status;
@@ -83,7 +79,7 @@ int	main(int ac, char **av, char **envp)
 			ft_loop_shell(data->get_string, envp, data);
 		waitpid(data->pid_main, &data->status, 0);
 		data->status = ft_change_status(data->status);
-		// printf("STATUS = %d\n", data->status);
+		printf("STATUS = %d\n", data->status);
 	}
 	free(data);
 	// system("leaks minishell");
@@ -92,7 +88,7 @@ int	main(int ac, char **av, char **envp)
 
 void	ft_loop_shell(char *str, char **envp, t_data *data)
 {
-	// int					pid;
+	int					pid;
 
 	data->envp = malloc_envp(envp);
 	signal(SIGINT, handler_two);
@@ -104,18 +100,16 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 		add_history(str);
 		str = ft_string(str, data);
 		ft_check_str_for_pipe(str, data);
-		if (data->pipe_flag < 1)
+		if (ft_is_pipe_or_redirect(data) < 1)
 		{
-			if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
-				str = make_redirect(str, data);
 			if (get_str(str) == 0)
 			{
-				data->pid_child = fork();
-				if (data->pid_child == 0)
+				pid = fork();
+				if (pid == 0)
 					check_str(str, data);
 				else
 				{
-					waitpid(data->pid_child, &data->status, 0);
+					waitpid(pid, &data->status, 0);
 					data->status = ft_change_status(data->status);
 				}
 			}
@@ -125,7 +119,7 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 				data->status = 0;
 			}
 		}
-		else if (data->pipe_flag > 0)
+		else if (ft_is_pipe_or_redirect(data) > 0)
 			ft_make_a_pipe(str, data);
 		if (str)
 			free(str);
@@ -138,9 +132,7 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 // void	handler(int signum)
 // {
 // 	if (signum == SIGINT)
-// 	{
-// 		exit(130);
-// 	}
+// 		*g_status = 1;
 // }
 
 void	handler_two(int signum)

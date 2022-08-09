@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:56 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/09 20:29:27 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/17 21:06:48 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,6 @@ void	ft_close_pipe(t_data *data)
 	free(data->fd_pipe);
 }
 
-// void	ft_do_redirect(char *str, t_data *data)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (str[++i])
-// 	{
-// 		if (str[i] == '>' || str[i] == '<')
-// 	}
-// }
-
 void	ft_procces(t_data *data)
 {
 	if (data->i == 0)
@@ -59,14 +48,6 @@ void	ft_procces(t_data *data)
 		dup2(data->fd_pipe[data->i - 1][0], 0);
 		dup2(data->fd_pipe[data->i][1], 1);
 		ft_close_pipe(data);
-	}
-	if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
-		data->pipe_part_split[data->i] = make_redirect(data->pipe_part_split[data->i], data);
-	if (get_str(data->pipe_part_split[data->i]) > 0)
-	{
-		data->envp = built_cmd(data->pipe_part_split[data->i],
-			get_str(data->pipe_part_split[data->i]), data);
-		exit(0);
 	}
 	check_str(data->pipe_part_split[data->i], data);
 }
@@ -163,6 +144,7 @@ void	check_str(char *str, t_data *data)
 
 	command = ft_split(str, ' ');
 	command = check_split_simb(command);
+	printf("STR-NEW = %s\n", command[0]);
 	path = find_path(command[0], data);
 	if (!path)
 	{
@@ -171,24 +153,16 @@ void	check_str(char *str, t_data *data)
 			command[0][0] == ';')
 		{
 			if (command[0][0] == '^')
-				ft_putstr_fd("shell : :s^: no previous substitution\n", 2);
+				printf("shell : :s^: no previous substitution\n");
 			else if (command[0][0] == '%')
-				ft_putstr_fd("shell : fg: %%: no such job\n", 2);
+				printf("shell : fg: %%: no such job\n");
 			else if (command[0][0] == '!')
-				ft_putstr_fd("shell : syntax error near unexpected token 'newline'\n", 2);
+				printf("shell : syntax error near unexpected token 'newline'\n");
 			else
-			{
-				ft_putstr_fd("shell : syntax error near unexpected token '", 2);
-				ft_putstr_fd(command[0], 2);
-				ft_putstr_fd("'\n", 2);
-			}
+				printf("shell : syntax error near unexpected token '%s'\n", command[0]);
 		}
 		else
-		{
-			ft_putstr_fd("shell : ", 2); 
-			ft_putstr_fd(command[0], 2);
-			ft_putstr_fd(" : command not found\n", 2);
-		}
+			printf("shell : %s: command not found\n", command[0]);
 		exit(127);
 	}
 	if (execve(path, command, data->envp) == -1)

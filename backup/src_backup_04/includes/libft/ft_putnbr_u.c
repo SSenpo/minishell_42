@@ -1,37 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_putnbr_u.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mmago <mmago@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/12 16:12:43 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/18 21:13:40 by mmago            ###   ########.fr       */
+/*   Created: 2021/12/15 17:59:17 by mmago             #+#    #+#             */
+/*   Updated: 2022/04/11 21:07:52 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+int	ft_putnbr_u(unsigned int n)
 {
-	size_t	i;
+	int	len;
 
-	i = 0;
-	if (!s)
-		return ;
-	if (fd == 6)
+	len = 0;
+	if (n >= 10)
 	{
-		while (s[i])
-		{
-			write(1, &s[i], 1);
-			i++;
-		}
-		write(1, "\n", 1);
-		return ;
+		len += ft_putnbr_printf(n / 10);
 	}
-	while (s[i])
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
+	len += ft_putchar_printf(n % 10 + '0');
+	return (len);
 }

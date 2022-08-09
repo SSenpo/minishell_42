@@ -24,7 +24,7 @@
 # define STDOUT 		1
 # define STDERR 		2
 
-// static int		*g_status;
+// int		*g_status;
 
 typedef struct s_data
 {
@@ -32,7 +32,6 @@ typedef struct s_data
 	char	**pipe_part_split;
 	char	*get_string;
 	char	get_simb;
-	int		pid_child;
 	int		flag_path;
 	int 	pid_main;
 	int		flag;
@@ -42,20 +41,13 @@ typedef struct s_data
 	int		check_pipe_flag;
 	int		pipe_flag;
 	int		redir_out_flag;
-	char	*redir_out_str;
 	int		redir_in_flag;
-	char	*redir_in_str;
 	int		duble_redirect_flag;
 	int		pipe_fork;
 	int		num_pipe;
 	int		i;
 	int		stop_procces;
 }				t_data;
-
-char	*make_redirect(char *command_str, t_data *data);
-char	*change_fd_out(char *command_str, t_data *data, int index);
-char	*change_fd_in(char *command_str, t_data *data, int index);
-
 
 int		ft_is_pipe_or_redirect(t_data *data);
 

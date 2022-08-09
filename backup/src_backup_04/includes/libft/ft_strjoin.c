@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/12 16:12:43 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/18 21:13:40 by mmago            ###   ########.fr       */
+/*   Created: 2021/10/07 12:28:36 by mmago             #+#    #+#             */
+/*   Updated: 2022/06/21 14:45:17 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	i;
+	char	*s3;
+	int	i;
+	int	o;
 
-	i = 0;
-	if (!s)
-		return ;
-	if (fd == 6)
+	if (!s1 && !s2)
+		return (NULL);
+	s3 = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!s3)
+		return (NULL);
+	i = -1;
+	o = -1;
+	while (s1[++i])
+		s3[i] = s1[i];
+	while (s2[++o])
 	{
-		while (s[i])
-		{
-			write(1, &s[i], 1);
-			i++;
-		}
-		write(1, "\n", 1);
-		return ;
-	}
-	while (s[i])
-	{
-		write(fd, &s[i], 1);
+		s3[i] = s2[o];
 		i++;
 	}
+	s3[i] = '\0';
+	return (s3);
 }
