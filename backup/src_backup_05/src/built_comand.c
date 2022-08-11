@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:05 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/11 20:42:22 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/18 21:25:27 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,6 @@ int	get_str(char *str)
 
 char	**built_cmd(char *str, int r, t_data *data)
 {
-	if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
-	{
-		data->std_in_fd = dup(0);
-		data->std_out_fd = dup(1);
-		str = make_redirect(str, data);
-	}
 	if (r == 1)
 	{
 		cd(str);
@@ -72,14 +66,6 @@ char	**built_cmd(char *str, int r, t_data *data)
 		data->envp = exec_export(str, data);
 	else if (r == 7)
 		ft_exit_print(str);
-	if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
-	{
-		dup2(data->std_out_fd, 1);
-		dup2(data->std_in_fd, 0);
-		close(data->file_redir_fd);
-		// ft_putstr_fd("asdfsadfa!\n", 1);
-	}
-	// ft_putstr_fd("ERROR!\n", 2);
 	return (data->envp);
 }
 
@@ -147,24 +133,24 @@ void	echo_command(char *str)
 		i = 1;
 		while (check[++i] && check[i + 1])
 		{
-			ft_putstr_fd(check[i], 1);
-			ft_putstr_fd(" ", 1);
+			ft_putstr_fd(check[i], 2);
+			ft_putstr_fd(" ", 2);
 		}
 		if (check[i])
-			ft_putstr_fd(check[i], 1);
+			ft_putstr_fd(check[i], 2);
 	}
 	else if (check[1] && (ft_strncmp(check[1], "-n\0", 2) != 0))
 	{
 		while (check[++i])
 		{
-			ft_putstr_fd(check[i], 1);
-			ft_putstr_fd(" ", 1);
+			ft_putstr_fd(check[i], 2);
+			ft_putstr_fd(" ", 2);
 		}
 		if (check[i])
-			ft_putstr_fd(check[i], 1);
-		ft_putstr_fd("\n", 1);
+			ft_putstr_fd(check[i], 2);
+		ft_putstr_fd("\n", 2);
 	}
 	else
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\n", 2);
 	free_str(check);
 }

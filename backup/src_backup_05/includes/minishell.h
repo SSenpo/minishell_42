@@ -45,9 +45,6 @@ typedef struct s_data
 	char	*redir_out_str;
 	int		redir_in_flag;
 	char	*redir_in_str;
-	int		file_redir_fd;
-	int		std_in_fd;
-	int		std_out_fd;
 	int		duble_redirect_flag;
 	int		pipe_fork;
 	int		num_pipe;

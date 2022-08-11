@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:08 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/11 20:42:21 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/09 21:56:11 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,6 @@ char	**find_pwd(t_data *data)
 	if (!data->envp[i])
 		return (data->envp);
 	old_pwd = ft_split(data->envp[i], '=');
-	if (data->envp[i])
-		free(data->envp[i]);
-	if (data->envp[i + 1])
-		free(data->envp[i + 1]);
 	new_pwd = malloc((sizeof(char) * 200));
 	getcwd(new_pwd, 150);
 	data->envp[i] = ft_strjoin("PWD=", new_pwd);

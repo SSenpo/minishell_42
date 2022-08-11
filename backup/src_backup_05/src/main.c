@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 17:38:21 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/11 20:01:22 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/09 20:29:35 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ void	ft_data_null(t_data * data)
 	data->duble_redirect_flag = 0;
 	data->redir_in_str = NULL;
 	data->redir_out_str = NULL;
-	data->file_redir_fd = 0;
-	data->std_in_fd = -1;
-	data->std_out_fd = -1;
 }
 
 // int		ft_is_pipe_or_redirect(t_data *data)
@@ -104,14 +101,13 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 	{
 		ft_data_null(data);
 		str = readline("shell-1.0$ ");
-		// ft_putstr_fd("alOHA!\n", 2);
 		add_history(str);
 		str = ft_string(str, data);
 		ft_check_str_for_pipe(str, data);
 		if (data->pipe_flag < 1)
 		{
-			// if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
-			// 	str = make_redirect(str, data);
+			if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
+				str = make_redirect(str, data);
 			if (get_str(str) == 0)
 			{
 				data->pid_child = fork();
@@ -123,15 +119,13 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 					data->status = ft_change_status(data->status);
 				}
 			}
-			else if (get_str(str) > 0)
+			else if(get_str(str) > 0)
 			{
-				// ft_putstr_fd("E!\n", 2);
 				data->envp = built_cmd(str, get_str(str), data);
-				// ft_putstr_fd("R!\n", 2);
 				data->status = 0;
 			}
 		}
-		else
+		else if (data->pipe_flag > 0)
 			ft_make_a_pipe(str, data);
 		if (str)
 			free(str);

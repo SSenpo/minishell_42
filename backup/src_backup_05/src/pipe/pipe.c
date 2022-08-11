@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:56 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/11 20:42:24 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/09 20:29:27 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,8 +161,6 @@ void	check_str(char *str, t_data *data)
 	char	**command;
 	char	*path;
 
-	if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
-		str = make_redirect(str, data);
 	command = ft_split(str, ' ');
 	command = check_split_simb(command);
 	path = find_path(command[0], data);

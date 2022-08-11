@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:14 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/11 20:32:34 by mmago            ###   ########.fr       */
+/*   Updated: 2022/07/18 21:42:29 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ char    **exec_export(char *str, t_data *data)
     i = -1;
 	new_str = ft_split(str, ' ');
 	new_str = check_split_simb(new_str);
-	if ((new_str[1] && (ft_strnstr(new_str[1], "-p\0", 3) != 0)) ||
-		!new_str[1])
+	if (new_str[1] && (ft_strnstr(new_str[1], "-p\0", 3) != 0))
 	{
 		while (data->envp[++i])
 		{
