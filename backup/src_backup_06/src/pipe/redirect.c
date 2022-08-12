@@ -7,8 +7,7 @@ char	*make_redirect(char *command_str, t_data *data)
 	index = -1;
 	while (command_str[++index])
 	{
-		if (command_str[index + 1] && command_str[index] == 60 &&
-			command_str[index + 1] != 60)
+		if (command_str[index] == 60)
 		{
 			if (!command_str[index + 1])
 			{
@@ -26,13 +25,6 @@ char	*make_redirect(char *command_str, t_data *data)
 			}
 			command_str = change_fd_out(command_str, data, index);
 		}
-		else if (command_str[index + 1] && command_str[index] == 60 &&
-			command_str[index + 1] == 60)
-		{
-			// ft_putnbr_fd(data->heredoc_flag, 2);
-			// ft_putstr_fd("\n", 2);
-			command_str = change_heredoc(command_str, data, index);
-		}
 	}
 	return(command_str);
 }
@@ -42,6 +34,7 @@ char	*change_fd_out(char *command_str, t_data *data, int index)
 	int file_name_len;
 	int	file_name_start;
 	int	start;
+	// int	file;
 
 	start = index + 1;
 	command_str[index] = ' ';
@@ -92,7 +85,7 @@ char	*change_fd_in(char *command_str, t_data *data, int index)
 	int file_name_len;
 	int	file_name_start;
 	int	start;
-	int	i = 0;
+	// int	file;
 
 	start = index + 1;
 	command_str[index] = ' ';
@@ -102,21 +95,6 @@ char	*change_fd_in(char *command_str, t_data *data, int index)
 	{
 		ft_putstr_fd("shell : syntax error near unexpected token `>'\n", 2);
 		exit(130);
-	}
-	if (command_str[start] == command_str[index])
-	{
-		while (command_str[start + 1] && command_str[start + 1] == ' ')
-			start++;
-		if (!command_str[start + 1])
-			exit(130);
-		while (command_str[start + 1] && command_str[start] != ' ')
-		{
-			data->delimiter[i] = command_str[start + 1];
-			command_str[start + 1] = ' ';
-			start++;
-			i++;
-		}
-		ft_do_heredoc(data);
 	}
 	while (command_str[start])
 	{
@@ -152,38 +130,5 @@ char	*change_fd_in(char *command_str, t_data *data, int index)
 		error();
 	dup2(data->file_redir_fd, 0);
 	free(data->redir_in_str);
-	return(command_str);
-}
-
-char	*change_heredoc(char *command_str, t_data *data, int index)
-{
-	int	start;
-	int	old_start;
-	int	len;
-	int	i = 0;
-
-	len = 0;
-	start = index + 2;
-	command_str[index] = ' ';
-	command_str[index + 1] = ' ';
-	while (command_str[start] && command_str[start] == ' ')
-		start++;
-	if (!command_str[start])
-		exit(130);
-	old_start = start;
-	while (command_str[start] && command_str[start] != ' ')
-	{
-		start++;
-		len++;
-	}
-	data->delimiter = malloc(sizeof(char) * (len + 1));
-	while (command_str[old_start] && command_str[old_start] != ' ')
-	{
-		data->delimiter[i] = command_str[old_start];
-		command_str[old_start] = ' ';
-		old_start++;
-		i++;
-	}
-	ft_do_heredoc(data);
 	return(command_str);
 }

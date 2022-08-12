@@ -6,7 +6,7 @@
 #    By: mmago <mmago@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/30 22:41:33 by mmago             #+#    #+#              #
-#    Updated: 2022/08/12 20:24:10 by mmago            ###   ########.fr        #
+#    Updated: 2022/08/09 20:21:32 by mmago            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,7 @@ RM = rm -f
 
 FILES = src/main.c src/envp_parser.c src/built_comand.c src/pars_str/check_dollar_one.c src/pars_str/check_dollar_two.c \
 		src/unset.c src/pars_str/get_str.c src/export.c src/exit.c \
-		src/pipe/pipe.c src/add_function/add_func.c src/pipe/redirect.c \
-		src/pipe/heredoc.c
+		src/pipe/pipe.c src/add_function/add_func.c src/pipe/redirect.c
 					
 OBJS = $(FILES:%.c=%.o)
 

@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 17:38:21 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/12 21:35:21 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/11 20:01:22 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,28 @@ void	ft_data_null(t_data * data)
 	data->file_redir_fd = 0;
 	data->std_in_fd = -1;
 	data->std_out_fd = -1;
-	data->heredoc_flag = 0;
-	data->delimiter = NULL;
-	unlink("estrong_super_heredoc");
 }
 
+// int		ft_is_pipe_or_redirect(t_data *data)
+// {
+// 	if (data->pipe_flag > 0 || data->redir_in_flag > 0 ||
+// 		data->redir_out_flag > 0)
+// 	{
+// 		if (data->pipe_flag > 0 &&
+// 			(data->redir_in_flag == 0 && data->redir_out_flag == 0))
+// 			return (1);
+// 		else if (data->pipe_flag > 0 &&
+// 			(data->redir_in_flag > 0 || data->redir_out_flag > 0))
+// 			return (2);
+// 		else if (data->pipe_flag == 0)
+// 			return (3);
+// 	}
+// 	return (0);
+// }
+
 // ** Мейник, считываем с помощью редлайна строку в нашей оболочке ** //
+
+// static int		*g_status;
 
 int	main(int ac, char **av, char **envp)
 {
@@ -70,13 +86,17 @@ int	main(int ac, char **av, char **envp)
 			ft_loop_shell(data->get_string, envp, data);
 		waitpid(data->pid_main, &data->status, 0);
 		data->status = ft_change_status(data->status);
+		// printf("STATUS = %d\n", data->status);
 	}
 	free(data);
+	// system("leaks minishell");
 	exit(data->status);
 }
 
 void	ft_loop_shell(char *str, char **envp, t_data *data)
 {
+	// int					pid;
+
 	data->envp = malloc_envp(envp);
 	signal(SIGINT, handler_two);
 	signal(SIGQUIT, SIG_IGN);
@@ -84,13 +104,14 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 	{
 		ft_data_null(data);
 		str = readline("shell-1.0$ ");
+		// ft_putstr_fd("alOHA!\n", 2);
 		add_history(str);
-		// ломается на билдах 
 		str = ft_string(str, data);
-		// ломается на билдах
 		ft_check_str_for_pipe(str, data);
 		if (data->pipe_flag < 1)
 		{
+			// if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
+			// 	str = make_redirect(str, data);
 			if (get_str(str) == 0)
 			{
 				data->pid_child = fork();
@@ -104,7 +125,9 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 			}
 			else if (get_str(str) > 0)
 			{
+				// ft_putstr_fd("E!\n", 2);
 				data->envp = built_cmd(str, get_str(str), data);
+				// ft_putstr_fd("R!\n", 2);
 				data->status = 0;
 			}
 		}
@@ -117,6 +140,14 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 	free_str(data->envp);
 	exit (77);
 }
+
+// void	handler(int signum)
+// {
+// 	if (signum == SIGINT)
+// 	{
+// 		exit(130);
+// 	}
+// }
 
 void	handler_two(int signum)
 {

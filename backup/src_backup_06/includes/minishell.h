@@ -46,8 +46,6 @@ typedef struct s_data
 	int		redir_in_flag;
 	char	*redir_in_str;
 	int		file_redir_fd;
-	int		heredoc_flag;
-	char	*delimiter;
 	int		std_in_fd;
 	int		std_out_fd;
 	int		duble_redirect_flag;
@@ -56,9 +54,6 @@ typedef struct s_data
 	int		i;
 	int		stop_procces;
 }				t_data;
-
-void	ft_do_heredoc(t_data *data);
-char	*change_heredoc(char *command_str, t_data *data, int index);
 
 char	*make_redirect(char *command_str, t_data *data);
 char	*change_fd_out(char *command_str, t_data *data, int index);

@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:56 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/12 21:06:34 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/11 20:42:24 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,17 @@ void	ft_close_pipe(t_data *data)
 	}
 	free(data->fd_pipe);
 }
+
+// void	ft_do_redirect(char *str, t_data *data)
+// {
+// 	int	i;
+
+// 	i = -1;
+// 	while (str[++i])
+// 	{
+// 		if (str[i] == '>' || str[i] == '<')
+// 	}
+// }
 
 void	ft_procces(t_data *data)
 {
@@ -106,8 +117,6 @@ void	ft_check_str_for_pipe(char *str, t_data *data)
 		{
 			if (str[i + 1] && str[i] == c && str[i + 1] != c)
 				data->redir_in_flag++;
-			else if (str[i + 1] && str[i] == c && str[i + 1] == c)
-				data->heredoc_flag++;
 			else if (str[i + 1] && str[i] == c + 2 &&
 				str[i + 1] != c + 2)
 				data->redir_out_flag++;
@@ -152,11 +161,8 @@ void	check_str(char *str, t_data *data)
 	char	**command;
 	char	*path;
 
-	if (data->redir_in_flag > 0 || data->redir_out_flag > 0 ||
-		data->heredoc_flag > 0)
+	if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
 		str = make_redirect(str, data);
-	// ft_putstr_fd(str, 2);
-	// ft_putstr_fd("\n", 2);
 	command = ft_split(str, ' ');
 	command = check_split_simb(command);
 	path = find_path(command[0], data);
@@ -181,13 +187,6 @@ void	check_str(char *str, t_data *data)
 		}
 		else
 		{
-			if (ft_strncmp(command[0], "minishell\0", 12) == 0)
-			{
-				free(path);
-				path = ft_strdup("/Users/mmago/minishell_mmago/shell/minishell");
-				if (execve(path, command, data->envp) == -1)
-					error();
-			}
 			ft_putstr_fd("shell : ", 2); 
 			ft_putstr_fd(command[0], 2);
 			ft_putstr_fd(" : command not found\n", 2);

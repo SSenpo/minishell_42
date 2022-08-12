@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:05 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/12 21:27:32 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/11 20:42:22 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ int	get_str(char *str)
 
 char	**built_cmd(char *str, int r, t_data *data)
 {
-	if (data->redir_in_flag > 0 || data->redir_out_flag > 0 ||
-		data->heredoc_flag > 0)
+	if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
 	{
 		data->std_in_fd = dup(0);
 		data->std_out_fd = dup(1);
@@ -73,13 +72,14 @@ char	**built_cmd(char *str, int r, t_data *data)
 		data->envp = exec_export(str, data);
 	else if (r == 7)
 		ft_exit_print(str);
-	if (data->redir_in_flag > 0 || data->redir_out_flag > 0 ||
-		data->heredoc_flag > 0)
+	if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
 	{
 		dup2(data->std_out_fd, 1);
 		dup2(data->std_in_fd, 0);
 		close(data->file_redir_fd);
+		// ft_putstr_fd("asdfsadfa!\n", 1);
 	}
+	// ft_putstr_fd("ERROR!\n", 2);
 	return (data->envp);
 }
 
