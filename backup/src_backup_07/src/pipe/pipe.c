@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:56 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/13 20:32:30 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/12 21:06:34 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,45 +22,18 @@ void	ft_close_pipe(t_data *data)
 	while (++count < data->pipe_flag)
 	{
 		while (++i < 2)
+		{
 			close(data->fd_pipe[count][i]);
+		}
 		free(data->fd_pipe[count]);
 		i = -1;
 	}
 	free(data->fd_pipe);
 }
 
-void	ft_procces_build_in(t_data *data)
-{
-	if (data->i == 0)
-		dup2(data->fd_pipe[0][1], 1);
-	else if (data->i == data->pipe_flag)
-		dup2(data->fd_pipe[data->i - 1][0], 0);
-	else
-	{
-		dup2(data->fd_pipe[data->i - 1][0], 0);
-		dup2(data->fd_pipe[data->i][1], 1);
-	}
-	if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
-		data->pipe_part_split[data->i] = make_redirect(data->pipe_part_split[data->i],
-		data);
-	data->envp = built_cmd(data->pipe_part_split[data->i],
-		get_str(data->pipe_part_split[data->i]), data);
-	dup2(data->std_out_fd, 1);
-	dup2(data->std_in_fd, 0);
-}
-
 void	ft_procces(t_data *data)
 {
-	if (data->i == data->if_pipe_and_heredoc_i)
-	{
-		if (data->pipe_part_split[data->i + 1])
-			dup2(data->fd_pipe[data->i][1], 1);
-		data->file_redir_fd = open("estrong_super_heredoc", O_RDONLY, 0644);
-		dup2(data->file_redir_fd, 0);
-		close(data->file_redir_fd);
-		ft_close_pipe(data);
-	}
-	else if (data->i == 0)
+	if (data->i == 0)
 	{
 		dup2(data->fd_pipe[0][1], 1);
 		ft_close_pipe(data);
@@ -78,6 +51,12 @@ void	ft_procces(t_data *data)
 	}
 	if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
 		data->pipe_part_split[data->i] = make_redirect(data->pipe_part_split[data->i], data);
+	if (get_str(data->pipe_part_split[data->i]) > 0)
+	{
+		data->envp = built_cmd(data->pipe_part_split[data->i],
+			get_str(data->pipe_part_split[data->i]), data);
+		exit(0);
+	}
 	check_str(data->pipe_part_split[data->i], data);
 }
 
@@ -97,35 +76,9 @@ void	ft_make_a_pipe(char *str, t_data *data)
 	}
 	while (data->pipe_part_split[++data->i])
 	{
-		ft_check_str_for_direct(data->pipe_part_split[data->i],
-			data);
-		if (data->heredoc_flag > 0)
-		{
-			data->if_pipe_and_heredoc_i = data->i;
-			data->pipe_part_split[data->i] = make_redirect(data->pipe_part_split[data->i],
-				data);
-			dup2(data->std_out_fd, 1);
-			dup2(data->std_in_fd, 0);
-		}
-		ft_redirect_null(data);
-	}
-	data->i = -1;
-	while (data->pipe_part_split[++data->i])
-	{
-		ft_check_str_for_direct(data->pipe_part_split[data->i],
-			data);
-		if (get_str(data->pipe_part_split[data->i]) > 0)
-		{
-			data->stop_procces++;
-			ft_procces_build_in(data);
-		}
-		else
-		{
-			data->pipe_fork = fork();
-			if (data->pipe_fork == 0)
-				ft_procces(data);
-		}
-		ft_redirect_null(data);
+		data->pipe_fork = fork();
+		if (data->pipe_fork == 0)
+			ft_procces(data);
 	}
 	ft_close_pipe(data);
 	while (data->stop_procces < data->i)
@@ -141,24 +94,14 @@ void	ft_make_a_pipe(char *str, t_data *data)
 void	ft_check_str_for_pipe(char *str, t_data *data)
 {
 	int		i;
-	
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] == 124)
-			data->pipe_flag++;
-	}
-}
-
-void	ft_check_str_for_direct(char *str, t_data *data)
-{
-	int		i;
 	char	c;
 	
 	i = -1;
 	c = 60;
 	while (str[++i])
 	{
+		if (str[i] == 124)
+			data->pipe_flag++;
 		if (str[i] == c || str[i] == (c + 2))
 		{
 			if (str[i + 1] && str[i] == c && str[i + 1] != c)
@@ -170,13 +113,6 @@ void	ft_check_str_for_direct(char *str, t_data *data)
 				data->redir_out_flag++;
 		}
 	}
-}
-
-void	ft_redirect_null(t_data *data)
-{
-	data->redir_in_flag = 0;
-	data->redir_out_flag = 0;
-	data->heredoc_flag = 0;
 }
 
 // ** Тут выполнение команды Shell ** //
@@ -216,9 +152,9 @@ void	check_str(char *str, t_data *data)
 	char	**command;
 	char	*path;
 
-	// if (data->redir_in_flag > 0 || data->redir_out_flag > 0 ||
-	// 	data->heredoc_flag > 0)
-	str = make_redirect(str, data);
+	if (data->redir_in_flag > 0 || data->redir_out_flag > 0 ||
+		data->heredoc_flag > 0)
+		str = make_redirect(str, data);
 	// ft_putstr_fd(str, 2);
 	// ft_putstr_fd("\n", 2);
 	command = ft_split(str, ' ');

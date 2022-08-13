@@ -6,6 +6,7 @@ void	ft_do_heredoc(t_data *data)
 	int	heredoc_file;
 	int	heredoc_pid;
 
+	unlink("estrong_super_heredoc");
 	heredoc_file = open("estrong_super_heredoc", O_CREAT | O_RDWR | O_APPEND, 0644);
 	heredoc_pid = fork();
 	if (heredoc_pid == 0)
@@ -25,7 +26,7 @@ void	ft_do_heredoc(t_data *data)
 	}
 	else
 	{
-		waitpid(heredoc_pid, &data->status, 0);
+		waitpid(-1, &data->status, 0);
 		close(heredoc_file);
 		if (data->delimiter)
 			free(data->delimiter);
@@ -34,4 +35,37 @@ void	ft_do_heredoc(t_data *data)
 		close(heredoc_file);
 		return ;
 	}
+}
+
+char	*change_heredoc(char *command_str, t_data *data, int index)
+{
+	int	start;
+	int	old_start;
+	int	len;
+	int	i = 0;
+
+	len = 0;
+	start = index + 2;
+	command_str[index] = ' ';
+	command_str[index + 1] = ' ';
+	while (command_str[start] && command_str[start] == ' ')
+		start++;
+	if (!command_str[start])
+		return (command_str);
+	old_start = start;
+	while (command_str[start] && command_str[start] != ' ')
+	{
+		start++;
+		len++;
+	}
+	data->delimiter = malloc(sizeof(char) * (len + 1));
+	while (command_str[old_start] && command_str[old_start] != ' ')
+	{
+		data->delimiter[i] = command_str[old_start];
+		command_str[old_start] = ' ';
+		old_start++;
+		i++;
+	}
+	ft_do_heredoc(data);
+	return (command_str);
 }

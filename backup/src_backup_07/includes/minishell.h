@@ -42,13 +42,11 @@ typedef struct s_data
 	int		check_pipe_flag;
 	int		pipe_flag;
 	int		redir_out_flag;
-	int		redir_out_plus;
 	char	*redir_out_str;
 	int		redir_in_flag;
 	char	*redir_in_str;
 	int		file_redir_fd;
 	int		heredoc_flag;
-	int		if_pipe_and_heredoc_i;
 	char	*delimiter;
 	int		std_in_fd;
 	int		std_out_fd;
@@ -58,10 +56,6 @@ typedef struct s_data
 	int		i;
 	int		stop_procces;
 }				t_data;
-
-void	ft_procces_build_in(t_data *data);
-void	ft_check_str_for_direct(char *str, t_data *data);
-void	ft_redirect_null(t_data *data);
 
 void	ft_do_heredoc(t_data *data);
 char	*change_heredoc(char *command_str, t_data *data, int index);

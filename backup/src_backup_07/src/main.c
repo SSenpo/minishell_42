@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 17:38:21 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/13 20:38:55 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/12 21:35:21 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,17 @@ void	ft_data_null(t_data * data)
 	data->pipe_fork = 0;
 	data->num_pipe = 0;
 	data->i = 0;
-	data->stop_procces = -1;
+	data->stop_procces = 0;
 	data->redir_out_flag = 0;
-	data->redir_out_plus = 0;
 	data->redir_in_flag = 0;
 	data->duble_redirect_flag = 0;
 	data->redir_in_str = NULL;
 	data->redir_out_str = NULL;
 	data->file_redir_fd = 0;
-	data->std_in_fd = dup(0);
-	data->std_out_fd = dup(1);
+	data->std_in_fd = -1;
+	data->std_out_fd = -1;
 	data->heredoc_flag = 0;
 	data->delimiter = NULL;
-	data->if_pipe_and_heredoc_i = -77;
 	unlink("estrong_super_heredoc");
 }
 
@@ -87,7 +85,9 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 		ft_data_null(data);
 		str = readline("shell-1.0$ ");
 		add_history(str);
+		// ломается на билдах 
 		str = ft_string(str, data);
+		// ломается на билдах
 		ft_check_str_for_pipe(str, data);
 		if (data->pipe_flag < 1)
 		{
@@ -104,7 +104,6 @@ void	ft_loop_shell(char *str, char **envp, t_data *data)
 			}
 			else if (get_str(str) > 0)
 			{
-				ft_check_str_for_direct(str, data);
 				data->envp = built_cmd(str, get_str(str), data);
 				data->status = 0;
 			}
