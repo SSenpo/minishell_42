@@ -6,13 +6,14 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:24 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/09 22:57:18 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/15 20:29:32 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include "../../includes/global.h"
 
-// ** ------------------- add function ---------------- ** //
+// ** -------- add function -------- ** //
 
 char	*ft_substr_mini(char const *s, unsigned int start, size_t len)
 {
@@ -44,8 +45,8 @@ char	*ft_substr_mini(char const *s, unsigned int start, size_t len)
 char	*ft_strjoin_pars(char const *s1, char const *s2)
 {
 	char	*s3;
-	int	i;
-	int	o;
+	int		i;
+	int		o;
 
 	if (!s1 && !s2)
 		return (NULL);
@@ -69,4 +70,62 @@ char	*ft_strjoin_pars(char const *s1, char const *s2)
 	return (s3);
 }
 
-// ** ---------------------------------------------------------- ** //
+// ** --- FIND LEN OF SEPARATED STR (" or ') --- ** //
+
+int	ft_len_short(char *str, char c)
+{
+	int	count;
+	int	i;
+
+	i = 0;
+	count = 2;
+	while (str[i] && count > 0)
+	{
+		if (str[i] == c)
+			count--;
+		i++;
+	}
+	i -= 2;
+	return (i);
+}
+
+// ** ------------------------------------- ** //
+
+void	ft_data_null(t_data *data)
+{
+	data->get_string = NULL;
+	data->flag_path = 0;
+	data->flag = 0;
+	data->get_pipe = 0;
+	data->check_pipe_flag = 0;
+	data->pipe_flag = 0;
+	data->pipe_fork = 0;
+	data->num_pipe = 0;
+	data->i = 0;
+	data->stop_procces = -1;
+	data->redir_out_flag = 0;
+	data->redir_out_plus = 0;
+	data->redir_in_flag = 0;
+	data->duble_redirect_flag = 0;
+	data->redir_in_str = NULL;
+	data->redir_out_str = NULL;
+	data->file_redir_fd = 0;
+	data->std_in_fd = dup(0);
+	data->std_out_fd = dup(1);
+	data->heredoc_flag = 0;
+	data->delimiter = NULL;
+	data->if_pipe_and_heredoc_i = -77;
+	unlink("estrong_super_heredoc");
+}
+
+void	handler_two(int signum)
+{
+	if (signum == SIGINT)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 1);
+		write(1, "\n", 1);
+		rl_redisplay();
+		*g_status = 1;
+	}
+}

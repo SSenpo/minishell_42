@@ -6,22 +6,23 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:05 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/13 20:04:01 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/15 20:33:35 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// ** Тут будем проверять строку на builtin команды, которые нужно выполнять отдельно ** //
+// ** Тут будем проверять строку на builtin команды, //
+// которые нужно выполнять отдельно ** //
 
 int	get_str(char *str)
 {
-	char **pars_str;
-	int	i;
+	char	**pars_str;
+	int		i;
 
 	i = 0;
 	if (!str[i])
-		return -1;
+		return (-1);
 	pars_str = ft_split(str, ' ');
 	i = 0;
 	if (pars_str[i])
@@ -49,9 +50,8 @@ int	get_str(char *str)
 
 char	**built_cmd(char *str, int r, t_data *data)
 {
-
-	if (data->redir_in_flag > 0 || data->redir_out_flag > 0 ||
-		data->heredoc_flag > 0)
+	if (data->redir_in_flag > 0 || data->redir_out_flag > 0
+		|| data->heredoc_flag > 0)
 	{
 		data->std_in_fd = dup(0);
 		data->std_out_fd = dup(1);
@@ -74,8 +74,8 @@ char	**built_cmd(char *str, int r, t_data *data)
 		data->envp = exec_export(str, data);
 	else if (r == 7)
 		ft_exit_print(str);
-	if (data->redir_in_flag > 0 || data->redir_out_flag > 0 ||
-		data->heredoc_flag > 0)
+	if (data->redir_in_flag > 0 || data->redir_out_flag > 0
+		|| data->heredoc_flag > 0)
 	{
 		dup2(data->std_out_fd, 1);
 		dup2(data->std_in_fd, 0);
@@ -87,9 +87,9 @@ char	**built_cmd(char *str, int r, t_data *data)
 
 // ** Выполнение функции CD ** //
 
-int cd(char *str)
+int	cd(char *str)
 {
-	char **new_str;
+	char	**new_str;
 
 	new_str = ft_split(str, ' ');
 	new_str = check_split_simb(new_str);
@@ -113,8 +113,8 @@ int cd(char *str)
 
 void	pwd_command(char *str)
 {
-	char *print_pwd;
-	char **check;
+	char	*print_pwd;
+	char	**check;
 
 	check = ft_split(str, ' ');
 	check = check_split_simb(check);
@@ -122,8 +122,9 @@ void	pwd_command(char *str)
 	getcwd(print_pwd, 190);
 	if (check[1] && (ft_strncmp(check[1], "-", 1) == 0))
 	{
-		if ((ft_strncmp(check[1], "-L\0", 3) == 0) || (ft_strncmp(check[1], "-P\0", 3) == 0) ||
-				(ft_strncmp(check[1], "-LP\0", 4) == 0))
+		if ((ft_strncmp(check[1], "-L\0", 3) == 0)
+			|| (ft_strncmp(check[1], "-P\0", 3) == 0)
+			|| (ft_strncmp(check[1], "-LP\0", 4) == 0))
 			ft_putstr_fd(print_pwd, 6);
 		else
 			ft_putstr_fd("pwd: usage: pwd [-LP]\n", 2);
@@ -138,7 +139,7 @@ void	pwd_command(char *str)
 
 void	echo_command(char *str)
 {
-	char **check;
+	char	**check;
 	int		i;
 
 	i = 0;

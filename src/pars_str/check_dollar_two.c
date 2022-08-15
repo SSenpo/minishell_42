@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:47 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/04 15:25:42 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/15 20:28:37 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*ft_first_check_doll(char *str, t_data *data, int i)
 	return (str);
 }
 
-int		ft_dollar_count(char *str, int count, int i)
+int	ft_dollar_count(char *str, int count, int i)
 {
 	if (str[i + 1] > 47 && str[i + 1] < 58)
 	{
@@ -81,10 +81,10 @@ int		ft_dollar_count(char *str, int count, int i)
 	}
 	while (str[++i])
 	{
-		if ((str[i] > 64 && str[i] < 91) ||
-			(str[i] > 96 && str[i] < 123) ||
-			(str[i] > 47 && str[i] < 58) ||
-			(str[i] == 95))
+		if ((str[i] > 64 && str[i] < 91)
+			|| (str[i] > 96 && str[i] < 123)
+			|| (str[i] > 47 && str[i] < 58)
+			|| (str[i] == 95))
 			count++;
 		else
 			break ;

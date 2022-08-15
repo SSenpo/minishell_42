@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:18 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/18 21:23:40 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/15 20:40:24 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ char	**b_unset(char *str, t_data *data)
 	new_str = check_split_simb(new_str);
 	if (new_str[i + 1])
 	{
-		while (data->envp[i] &&
-			ft_strnstr(data->envp[i], new_str[1], ft_strlen(new_str[1])) == 0)
+		while (data->envp[i] && ft_strnstr(data->envp[i],
+				new_str[1], ft_strlen(new_str[1])) == 0)
 			i++;
 	}
 	if (new_str[1] && data->envp[i])
@@ -48,12 +48,12 @@ char	**del_var(char *str, t_data *data)
 	int	i;
 
 	i = 0;
-	while(data->envp[i])
+	while (data->envp[i])
 	{
 		if ((ft_strnstr(data->envp[i], str, ft_strlen(str)) == 0))
 			i++;
 		else
-			break;
+			break ;
 	}
 	while (data->envp[i + 1])
 	{

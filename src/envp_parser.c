@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:41:08 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/11 20:42:21 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/15 20:34:22 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@ char	**malloc_envp(char **envp)
 
 	i = -1;
 	o = -1;
-	while (envp[++i]);
+	while (envp[++i])
+		;
 	envp_1 = malloc(sizeof(char *) * (i + 1));
 	envp_1[i + 1] = NULL;
 	i = -1;
 	while (envp[++i])
 	{
-		while (envp[i][++o]);
+		while (envp[i][++o])
+			;
 		envp_1[i] = malloc(sizeof(char) * (o + 1));
 		envp_1[i][o + 1] = '\0';
 		o = 0;

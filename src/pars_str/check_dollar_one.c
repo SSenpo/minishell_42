@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:50 by mmago             #+#    #+#             */
-/*   Updated: 2022/07/04 15:26:31 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/15 20:12:06 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,13 @@ char	*ft_change_dollar_one(char *str, int start, int count, t_data *data)
 
 char	*ft_change_dollar_two(char *str, char *new_str, int start, int count)
 {
-	char *full;
-	int	i;
-	int n;
+	char	*full;
+	int		i;
+	int		n;
 
 	i = -1;
-	full = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(new_str) - count + 1));
+	full = malloc(sizeof(char) * (ft_strlen(str)
+				+ ft_strlen(new_str) - count + 1));
 	if (!full)
 		return (NULL);
 	while (++i < start)
@@ -100,7 +101,7 @@ char	*ft_change_dollar_two(char *str, char *new_str, int start, int count)
 	free(new_str);
 	free(str);
 	full[i] = '\0';
-	return (full);	
+	return (full);
 }
 
-// ** -------------------------------------------------------------------------- ** //
+// ** ------------------------------------------------------- ** //

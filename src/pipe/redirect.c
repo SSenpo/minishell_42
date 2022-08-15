@@ -1,7 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/15 20:42:23 by mmago             #+#    #+#             */
+/*   Updated: 2022/08/15 20:45:20 by mmago            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-
-//  NOT WORKING!!!!!!!!!!!!!!
 char	*make_redirect(char *command_str, t_data *data)
 {
 	int	index;
@@ -9,15 +19,16 @@ char	*make_redirect(char *command_str, t_data *data)
 	index = -1;
 	while (command_str[++index])
 	{
-		if (command_str[index + 1] && command_str[index] == 60 &&
-			command_str[index + 1] == 60)
+		if (command_str[index + 1] && command_str[index] == 60
+			&& command_str[index + 1] == 60)
 			command_str = change_heredoc(command_str, data, index);
-		else if (command_str[index + 1] && command_str[index] == 60 &&
-			command_str[index + 1] != 60)
+		else if (command_str[index + 1] && command_str[index] == 60
+			&& command_str[index + 1] != 60)
 		{
 			if (!command_str[index + 1])
 			{
-				ft_putstr_fd("shell : syntax error near unexpected token `newline'\n", 2);
+				ft_putstr_fd(
+					"shell : syntax error near unexpected token `newline'\n", 2);
 				exit(130);
 			}
 			command_str = change_fd_in(command_str, data, index);
@@ -26,18 +37,19 @@ char	*make_redirect(char *command_str, t_data *data)
 		{
 			if (!command_str[index + 1])
 			{
-				ft_putstr_fd("shell : syntax error near unexpected token `newline'\n", 2);
+				ft_putstr_fd(
+					"shell : syntax error near unexpected token `newline'\n", 2);
 				exit(130);
 			}
 			command_str = change_fd_out(command_str, data, index);
 		}
 	}
-	return(command_str);
+	return (command_str);
 }
 
 char	*change_fd_out(char *command_str, t_data *data, int index)
 {
-	int file_name_len;
+	int	file_name_len;
 	int	file_name_start;
 	int	start;
 
@@ -67,7 +79,7 @@ char	*change_fd_out(char *command_str, t_data *data, int index)
 				file_name_len++;
 				start++;
 			}
-			break;
+			break ;
 		}
 	}
 	data->redir_out_str = malloc(sizeof(char) * (file_name_len + 1));
@@ -85,17 +97,19 @@ char	*change_fd_out(char *command_str, t_data *data, int index)
 	}
 	data->redir_out_str[index] = '\0';
 	if (data->redir_out_plus < 1)
-		data->file_redir_fd = open(data->redir_out_str, O_CREAT | O_RDWR | O_TRUNC, 0644);
+		data->file_redir_fd = open(data->redir_out_str,
+				O_CREAT | O_RDWR | O_TRUNC, 0644);
 	else
-		data->file_redir_fd = open(data->redir_out_str, O_CREAT | O_RDWR | O_APPEND, 0644);
+		data->file_redir_fd = open(data->redir_out_str,
+				O_CREAT | O_RDWR | O_APPEND, 0644);
 	free(data->redir_out_str);
 	dup2(data->file_redir_fd, 1);
-	return(command_str);
+	return (command_str);
 }
 
 char	*change_fd_in(char *command_str, t_data *data, int index)
 {
-	int file_name_len;
+	int	file_name_len;
 	int	file_name_start;
 	int	start;
 
@@ -120,7 +134,7 @@ char	*change_fd_in(char *command_str, t_data *data, int index)
 				file_name_len++;
 				start++;
 			}
-			break;
+			break ;
 		}
 	}
 	data->redir_in_str = malloc(sizeof(char) * (file_name_len + 1));
@@ -142,5 +156,5 @@ char	*change_fd_in(char *command_str, t_data *data, int index)
 		error();
 	dup2(data->file_redir_fd, 0);
 	free(data->redir_in_str);
-	return(command_str);
+	return (command_str);
 }

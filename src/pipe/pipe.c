@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:56 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/13 20:32:30 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/15 20:49:34 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_close_pipe(t_data *data)
 {
-	int count;
+	int	count;
 	int	i;
 
 	i = -1;
@@ -41,12 +41,11 @@ void	ft_procces_build_in(t_data *data)
 		dup2(data->fd_pipe[data->i][1], 1);
 	}
 	if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
-		data->pipe_part_split[data->i] = make_redirect(data->pipe_part_split[data->i],
-		data);
+			data->pipe_part_split[data->i] = make_redirect(
+				data->pipe_part_split[data->i], data);
 	data->envp = built_cmd(data->pipe_part_split[data->i],
-		get_str(data->pipe_part_split[data->i]), data);
-	dup2(data->std_out_fd, 1);
-	dup2(data->std_in_fd, 0);
+			get_str(data->pipe_part_split[data->i]), data);
+	exit(0);
 }
 
 void	ft_procces(t_data *data)
@@ -77,7 +76,8 @@ void	ft_procces(t_data *data)
 		ft_close_pipe(data);
 	}
 	if (data->redir_in_flag > 0 || data->redir_out_flag > 0)
-		data->pipe_part_split[data->i] = make_redirect(data->pipe_part_split[data->i], data);
+		data->pipe_part_split[data->i] = make_redirect(
+				data->pipe_part_split[data->i], data);
 	check_str(data->pipe_part_split[data->i], data);
 }
 
@@ -102,8 +102,8 @@ void	ft_make_a_pipe(char *str, t_data *data)
 		if (data->heredoc_flag > 0)
 		{
 			data->if_pipe_and_heredoc_i = data->i;
-			data->pipe_part_split[data->i] = make_redirect(data->pipe_part_split[data->i],
-				data);
+			data->pipe_part_split[data->i] = make_redirect(
+					data->pipe_part_split[data->i], data);
 			dup2(data->std_out_fd, 1);
 			dup2(data->std_in_fd, 0);
 		}
@@ -114,16 +114,12 @@ void	ft_make_a_pipe(char *str, t_data *data)
 	{
 		ft_check_str_for_direct(data->pipe_part_split[data->i],
 			data);
-		if (get_str(data->pipe_part_split[data->i]) > 0)
+		data->pipe_fork = fork();
+		if (data->pipe_fork == 0)
 		{
-			data->stop_procces++;
-			ft_procces_build_in(data);
-		}
-		else
-		{
-			data->pipe_fork = fork();
-			if (data->pipe_fork == 0)
-				ft_procces(data);
+			if (get_str(data->pipe_part_split[data->i]) > 0)
+				ft_procces_build_in(data);
+			ft_procces(data);
 		}
 		ft_redirect_null(data);
 	}
@@ -141,7 +137,7 @@ void	ft_make_a_pipe(char *str, t_data *data)
 void	ft_check_str_for_pipe(char *str, t_data *data)
 {
 	int		i;
-	
+
 	i = -1;
 	while (str[++i])
 	{
@@ -154,7 +150,7 @@ void	ft_check_str_for_direct(char *str, t_data *data)
 {
 	int		i;
 	char	c;
-	
+
 	i = -1;
 	c = 60;
 	while (str[++i])
@@ -216,11 +212,10 @@ void	check_str(char *str, t_data *data)
 	char	**command;
 	char	*path;
 
-	// if (data->redir_in_flag > 0 || data->redir_out_flag > 0 ||
-	// 	data->heredoc_flag > 0)
-	str = make_redirect(str, data);
-	// ft_putstr_fd(str, 2);
-	// ft_putstr_fd("\n", 2);
+	ft_check_str_for_direct(str, data);
+	if (data->redir_in_flag > 0 || data->redir_out_flag > 0
+		|| data->heredoc_flag > 0)
+		str = make_redirect(str, data);
 	command = ft_split(str, ' ');
 	command = check_split_simb(command);
 	path = find_path(command[0], data);
@@ -245,7 +240,7 @@ void	check_str(char *str, t_data *data)
 		}
 		else
 		{
-			if (ft_strncmp(command[0], "minishell\0", 12) == 0)
+			if (ft_strncmp(command[0], "./minishell\0", 14) == 0)
 			{
 				free(path);
 				path = ft_strdup("/Users/mmago/minishell_mmago/shell/minishell");

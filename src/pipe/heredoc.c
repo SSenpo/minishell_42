@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/15 20:41:03 by mmago             #+#    #+#             */
+/*   Updated: 2022/08/15 20:42:08 by mmago            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 void	ft_do_heredoc(t_data *data)
 {
-	char *readline_str;
-	int	heredoc_file;
-	int	heredoc_pid;
+	char	*readline_str;
+	int		heredoc_file;
+	int		heredoc_pid;
 
-	unlink("estrong_super_heredoc");
-	heredoc_file = open("estrong_super_heredoc", O_CREAT | O_RDWR | O_APPEND, 0644);
+	heredoc_file = open("estrong_super_heredoc",
+			O_CREAT | O_RDWR | O_TRUNC, 0644);
 	heredoc_pid = fork();
 	if (heredoc_pid == 0)
 	{
@@ -15,8 +27,8 @@ void	ft_do_heredoc(t_data *data)
 		{
 			readline_str = readline("> ");
 			if (ft_strncmp(readline_str, data->delimiter,
-				ft_strlen(data->delimiter)) == 0)
-				break;
+					ft_strlen(data->delimiter)) == 0)
+				break ;
 			ft_putstr_fd(readline_str, heredoc_file);
 			ft_putstr_fd("\n", heredoc_file);
 			free(readline_str);
@@ -42,8 +54,9 @@ char	*change_heredoc(char *command_str, t_data *data, int index)
 	int	start;
 	int	old_start;
 	int	len;
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	len = 0;
 	start = index + 2;
 	command_str[index] = ' ';

@@ -6,7 +6,7 @@
 /*   By: mmago <mmago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 22:40:54 by mmago             #+#    #+#             */
-/*   Updated: 2022/08/13 14:16:22 by mmago            ###   ########.fr       */
+/*   Updated: 2022/08/15 20:07:36 by mmago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	*ft_string(char *str, t_data *data)
 		data->flag = check_count_c(data->get_string);
 	}
 	new_str = ft_strjoin_pars(new_str, data->get_string);
+	ft_check_str_for_pipe(new_str, data);
 	return (new_str);
 }
 
@@ -46,7 +47,7 @@ char	*get_str_part_two(char *get, char *new_str, t_data *data)
 	if (ft_len_short(data->get_string, data->get_simb) == 0)
 	{
 		data->get_string = ft_substr_mini(data->get_string, 2,
-			ft_strlen(data->get_string) - 2);
+				ft_strlen(data->get_string) - 2);
 	}
 	else
 	{
@@ -55,9 +56,9 @@ char	*get_str_part_two(char *get, char *new_str, t_data *data)
 		get = ft_sep_str(data->get_string, data->get_simb, 0, data);
 		new_str = ft_strjoin_pars(new_str, get);
 		data->get_string = ft_substr_mini(data->get_string,
-			ft_len_short(data->get_string, data->get_simb) + 2,
-			ft_strlen(data->get_string) - ft_len_short(data->get_string,
-			data->get_simb));
+				ft_len_short(data->get_string, data->get_simb) + 2,
+				ft_strlen(data->get_string) - ft_len_short(data->get_string,
+					data->get_simb));
 	}
 	return (new_str);
 }
@@ -67,7 +68,7 @@ char	*get_str_part_two(char *get, char *new_str, t_data *data)
 int	check_count_c(char *str)
 {
 	int	i;
-	
+
 	i = 0;
 	while (str[i])
 	{
@@ -90,20 +91,29 @@ int	check_count_c(char *str)
 	return (-1);
 }
 
-// ** ------------------- SEPARATE THE PART OF (' ' or " ") STR ---------------- ** //
+// ** ---- SEPARATE THE PART OF (' ' or " ") STR ---- ** //
 
 char	*ft_sep_str(char *str, char c, int flag, t_data *data)
 {
-	char *str_new;
-	int	i;
-	int	count;
-	int	byte;
+	char	*str_new;
+	int		byte;
 
-	i = 0;
 	byte = ft_len_short(str, c);
 	str_new = malloc(sizeof(char) * (byte + 1));
 	if (!str_new)
 		return (str);
+	str_new = ft_sep_str_end(str, flag, c, str_new);
+	if (str_new && c == 34)
+		str_new = ft_check_dollar(str_new, data);
+	return (str_new);
+}
+
+char	*ft_sep_str_end(char *str, int flag, char c, char *str_new)
+{
+	int	count;
+	int	i;
+
+	i = 0;
 	count = 2;
 	while (str[flag] && count > 0)
 	{
@@ -120,30 +130,9 @@ char	*ft_sep_str(char *str, char c, int flag, t_data *data)
 				flag++;
 			}
 			else
-				str_new[i++] = str[flag++];	
+				str_new[i++] = str[flag++];
 		}
 	}
 	str_new[i] = '\0';
-	if (str_new && c == 34)
-		str_new = ft_check_dollar(str_new, data);
 	return (str_new);
-}
-
-// ** ------------------- FIND LEN OF SEPARATED STR (" or ') ---------------- ** //
-
-int	ft_len_short(char *str, char c)
-{
-	int	count;
-	int	i;
-
-	i = 0;
-	count = 2;
-	while (str[i] && count > 0)
-	{
-		if (str[i] == c)
-			count--;
-		i++;
-	}
-	i -= 2;
-	return (i);
 }

@@ -20,12 +20,6 @@
 # include <curses.h>
 # include <term.h>
 
-# define STDIN 			0
-# define STDOUT 		1
-# define STDERR 		2
-
-// static int		*g_status;
-
 typedef struct s_data
 {
 	char	**envp;
@@ -59,6 +53,18 @@ typedef struct s_data
 	int		stop_procces;
 }				t_data;
 
+// ** MAIN ** //
+void	ft_start_shell(t_data *data, char **envp);
+void	ft_loop_shell(char *str, t_data *data);
+char	*ft_do_minishell(char *str, t_data *data);
+
+// ** GET_STR ** //
+char	*ft_string(char *str, t_data *data);
+char	*ft_sep_str(char *str, char c, int flag, t_data *data);
+char	*ft_sep_str_end(char *str, int flag, char c, char *str_new);
+char	*get_str_part_two(char *get, char *new_str, t_data *data);
+int		check_count_c(char *str);
+
 void	ft_procces_build_in(t_data *data);
 void	ft_check_str_for_direct(char *str, t_data *data);
 void	ft_redirect_null(t_data *data);
@@ -76,9 +82,8 @@ int		ft_is_pipe_or_redirect(t_data *data);
 void	ft_check_str_for_pipe(char *str, t_data *data);
 void	ft_make_a_pipe(char *str, t_data *data);
 void	ft_procces(t_data *data);
-void	ft_data_null(t_data * data);
+void	ft_data_null(t_data *data);
 
-void	handler(int signum);
 void	handler_two(int signum);
 
 char	*get_str_part_two(char *get, char *new_str, t_data *data);
@@ -105,7 +110,7 @@ char	*dollar_question(char *str, t_data *data, int i);
 char	*ft_first_change_doll(char *str, int start, int count, t_data *data);
 char	*ft_first_check_doll(char *str, t_data *data, int i);
 
-void	ft_loop_shell(char *str, char **envp, t_data *data);
+
 int		cd(char *str);
 void	b_env(t_data *data);
 void	free_str(char **str);
